@@ -1,0 +1,18 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Thumbnails: publicly readable for marketplace cards, uploadable by authenticated users
+    match /thumbnails/{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    
+    // Digital downloadable deliverable files: protected
+    // Client SDK direct reads are blocked so unpurchased authenticated users cannot bypass the backend!
+    // All downloads MUST go through the authorized backend download API (/api/downloads/:productId)
+    match /products/{productId}/{fileName} {
+      allow read: if false; // Secured via Backend Admin SDK authorization
+      allow write: if request.auth != null;
+    }
+  }
+}
