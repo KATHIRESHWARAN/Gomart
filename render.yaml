@@ -2,8 +2,7 @@ services:
   - type: web
     name: gomart-backend
     env: node
-    rootDir: server
-    buildCommand: npm install
+    buildCommand: npm run build
     startCommand: npm start
     healthCheckPath: /api/health
     envVars:

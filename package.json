@@ -3,13 +3,14 @@
   "version": "1.0.0",
   "description": "GoMart - Digital Products Marketplace built with React, Vite, Tailwind CSS, Express.js, and Firebase",
   "scripts": {
-    "start": "cd server && npm start",
+    "start": "node server/server.js",
     "test": "cd server && npm test",
     "seed": "cd server && npm run seed",
     "dev:server": "cd server && npm run dev",
     "dev:client": "cd client && npm run dev",
-    "build:client": "cd client && npm run build",
-    "build": "cd client && npm run build",
+    "build:client": "cd client && npm install && npm run build",
+    "build:server": "cd server && npm install",
+    "build": "cd client && npm install && npm run build && cd ../server && npm install",
     "dev": "cd client && npm run dev",
     "deploy:rules": "firebase deploy --only firestore:rules"
   }
