@@ -43,7 +43,7 @@ const Footer = () => {
               </div>
               <div className="flex flex-col">
                 <span className="font-black text-xl text-white tracking-tight leading-none">
-                  E-Products <span className="text-brand-400 font-extrabold text-xs uppercase px-1 py-0.5 rounded bg-brand-950 border border-brand-800 ml-1">SaaS</span>
+                  GoMart <span className="text-brand-400 font-extrabold text-xs uppercase px-1 py-0.5 rounded bg-brand-950 border border-brand-800 ml-1">Digital</span>
                 </span>
                 <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mt-1">
                   She Software Solutions
@@ -52,21 +52,21 @@ const Footer = () => {
             </Link>
 
             <p className="text-slate-400 text-xs sm:text-sm max-w-sm leading-relaxed">
-              Full-Stack Digital Products Marketplace engineered for developers, students, and digital creators. Buy and sell e-books, source code templates, tutorials, and study materials with instant automated delivery.
+              Digital products marketplace for developers, creators, and students. Discover and publish verified e-books, code templates, tutorials, and study materials with instant delivery.
             </p>
 
             <div className="grid grid-cols-2 gap-2.5 pt-2 text-xs text-slate-400">
               <span className="flex items-center gap-1.5 text-emerald-400 font-semibold">
-                <Zap className="w-3.5 h-3.5" /> Instant File Download
+                <Zap className="w-3.5 h-3.5" /> Instant Download
               </span>
               <span className="flex items-center gap-1.5 text-brand-400 font-semibold">
-                <ShieldCheck className="w-3.5 h-3.5" /> Verified Secure Assets
+                <ShieldCheck className="w-3.5 h-3.5" /> Verified Files
               </span>
               <span className="flex items-center gap-1.5 text-amber-400 font-semibold">
-                <Lock className="w-3.5 h-3.5" /> Role-Based Access
+                <Lock className="w-3.5 h-3.5" /> Secure Checkout
               </span>
               <span className="flex items-center gap-1.5 text-purple-400 font-semibold">
-                <CheckCircle2 className="w-3.5 h-3.5" /> Lifetime Updates
+                <CheckCircle2 className="w-3.5 h-3.5" /> Lifetime Access
               </span>
             </div>
           </div>
@@ -105,18 +105,18 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Column 3: Assessment Metadata */}
+          {/* Column 3: Platform Trust & Support */}
           <div>
             <h4 className="text-white text-xs font-bold tracking-wider uppercase mb-4">
-              Assessment Details
+              Platform & Trust
             </h4>
             <div className="space-y-2 text-xs text-slate-400 leading-relaxed">
-              <p className="font-semibold text-slate-200">Organization:</p>
+              <p className="font-semibold text-slate-200">Operated by:</p>
               <p>She Software Solutions</p>
-              <p className="font-semibold text-slate-200 mt-2">Domain:</p>
-              <p>Full Stack Developer Intern Assessment</p>
-              <p className="font-semibold text-slate-200 mt-2">Stack:</p>
-              <p>React 19, Express 5, Firebase Auth & Cloud Firestore</p>
+              <p className="font-semibold text-slate-200 mt-2">Security:</p>
+              <p>Verified creator files with encrypted cloud delivery and secure checkout.</p>
+              <p className="font-semibold text-slate-200 mt-2">Support:</p>
+              <p>support@eproducts.com</p>
             </div>
           </div>
 

@@ -354,7 +354,7 @@ const ProductDetails = () => {
                 : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-white'
             }`}
           >
-            Digital Deliverables & Specs
+            Specifications
           </button>
           <button
             onClick={() => setActiveTab('description')}
@@ -364,7 +364,7 @@ const ProductDetails = () => {
                 : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-white'
             }`}
           >
-            Full Description & Overview
+            Description
           </button>
           <button
             onClick={() => setActiveTab('reviews')}
@@ -374,7 +374,7 @@ const ProductDetails = () => {
                 : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-white'
             }`}
           >
-            Student & Creator Reviews ({reviews.length})
+            Customer Reviews ({reviews.length})
           </button>
         </div>
 
@@ -417,7 +417,7 @@ const ProductDetails = () => {
                     <CheckCircle2 className="w-4 h-4 text-emerald-500" /> 1-Click Authenticated Download
                   </span>
                   <p className="text-slate-500 dark:text-slate-400 pl-5.5">
-                    Secured by Firebase token verification to protect authorized buyers.
+                    Protected single-click download link for verified purchasers.
                   </p>
                 </div>
               </div>
@@ -427,7 +427,7 @@ const ProductDetails = () => {
           {activeTab === 'description' && (
             <div className="space-y-4 max-w-3xl text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
               <p>{product.description || 'Comprehensive digital material prepared by certified domain experts. Designed to accelerate your understanding and development efficiency.'}</p>
-              <p>All downloadable materials are audited for quality, compatibility, and security. After completing your simulated order, navigate to your User Dashboard to immediately trigger your download.</p>
+              <p>All downloadable materials are audited for quality, compatibility, and security. After purchase, access your files anytime from your account dashboard.</p>
             </div>
           )}
 

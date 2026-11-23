@@ -106,7 +106,7 @@ const OrdersTab = () => {
             My Orders & Tracking
           </h2>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-            Track package delivery, view invoices, and manage order items.
+            View invoices, access transaction receipts, and manage order history.
           </p>
         </div>
 
@@ -163,7 +163,7 @@ const OrdersTab = () => {
                     <span>•</span>
                     <span className="flex items-center gap-1 font-medium text-slate-600 dark:text-slate-300">
                       <CreditCard className="w-3.5 h-3.5" />
-                      {ord.paymentMethod || 'Cash on Delivery'}
+                      {ord.paymentMethod || 'Online Payment'}
                     </span>
                   </div>
                 </div>
@@ -188,10 +188,10 @@ const OrdersTab = () => {
                 </div>
               </div>
 
-              {/* Visual 5-Step Order Progress Tracker */}
+              {/* Visual Order Progress Tracker */}
               {!isCancelled ? (
                 <div className="py-2 px-3 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800">
-                  <div className="grid grid-cols-5 gap-2 relative">
+                  <div className="grid grid-cols-4 gap-2 relative">
                     {STATUS_STEPS.map((step, idx) => {
                       const isDone = idx <= currentStep;
                       const isCurrent = idx === currentStep;
@@ -263,15 +263,15 @@ const OrdersTab = () => {
                 ))}
               </div>
 
-              {/* Shipping Address & Verification Footer */}
+              {/* Delivery & License Details Footer */}
               <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-slate-400">
                 {ord.shippingAddress ? (
                   <div className="flex items-center gap-1.5 text-slate-600 dark:text-slate-300">
-                    <MapPin className="w-3.5 h-3.5 text-brand-600 shrink-0" />
-                    <span>Delivered to: <strong>{ord.shippingAddress.fullName}</strong>, {ord.shippingAddress.city} ({ord.shippingAddress.pincode})</span>
+                    <ShieldCheck className="w-3.5 h-3.5 text-brand-600 shrink-0" />
+                    <span>License: <strong>{ord.shippingAddress.licenseType || 'Commercial / Developer License'}</strong></span>
                   </div>
                 ) : (
-                  <span>Standard Go Mart Express Shipping</span>
+                  <span>Instant Digital Delivery</span>
                 )}
                 
                 <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-semibold text-[11px]">

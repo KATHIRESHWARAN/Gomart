@@ -68,7 +68,7 @@ const Signup = () => {
             <UserPlus className="w-6 h-6" />
           </div>
           <h2 className="text-2xl font-black text-navy-900 dark:text-white tracking-tight">Create your Go Mart account</h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400">Join thousands of shoppers for deals, fast shipping, and order tracking.</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400">Join thousands of creators and builders buying and selling digital assets.</p>
         </div>
 
         {/* Google Authentication Button */}

@@ -115,7 +115,7 @@ const QuickViewModal = ({ product, isOpen, onClose }) => {
                 {/* Brand & Category */}
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-black uppercase tracking-wider text-brand-600 dark:text-brand-400">
-                    {product.brand || product.category || 'GoMart Retail'}
+                    {product.brand || product.category || 'GoMart'}
                   </span>
                   <span className="text-[11px] text-slate-400">
                     {product.category}
@@ -142,16 +142,16 @@ const QuickViewModal = ({ product, isOpen, onClose }) => {
                 <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-800 space-y-1">
                   <div className="flex items-baseline gap-2.5">
                     <span className="text-2xl font-black text-navy-900 dark:text-white">
-                      ₹{Number(product.price).toFixed(2)}
+                      ${Number(product.price).toFixed(2)}
                     </span>
                     <span className="text-sm text-slate-400 line-through">
-                      ₹{originalPrice.toFixed(2)}
+                      ${originalPrice.toFixed(2)}
                     </span>
                     <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">
-                      Save ₹{(originalPrice - Number(product.price)).toFixed(2)} ({discountPercent}% off)
+                      Save ${(originalPrice - Number(product.price)).toFixed(2)} ({discountPercent}% off)
                     </span>
                   </div>
-                  <p className="text-[10px] text-slate-400 font-medium">Inclusive of all taxes</p>
+                  <p className="text-[10px] text-slate-400 font-medium">Digital deliverable with instant access</p>
                 </div>
 
                 {/* Description */}
@@ -161,8 +161,8 @@ const QuickViewModal = ({ product, isOpen, onClose }) => {
 
                 {/* Delivery reassurance */}
                 <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
-                  <Truck className="w-4 h-4 text-brand-600" />
-                  <span>Free Delivery • 7 Days Replacement</span>
+                  <Sparkles className="w-4 h-4 text-brand-600" />
+                  <span>Instant Digital Download • Lifetime License & Updates</span>
                 </div>
               </div>
 

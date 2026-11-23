@@ -82,7 +82,7 @@ const Home = () => {
           {/* Assessment & Domain Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-50 dark:bg-brand-950/70 border border-brand-200 dark:border-brand-800 text-brand-700 dark:text-brand-300 text-xs font-bold tracking-wide shadow-xs animate-fade-in">
             <Sparkles className="w-4 h-4 text-brand-600 dark:text-brand-400" />
-            <span>Verified Creator Digital Marketplace • Instant Downloads</span>
+            <span>Digital Products Marketplace • Instant Downloads</span>
           </div>
 
           {/* Main Title */}
@@ -188,7 +188,7 @@ const Home = () => {
           <div>
             <div className="flex items-center gap-1.5 text-brand-600 dark:text-brand-400 text-xs font-bold uppercase tracking-wider">
               <Layers className="w-4 h-4" />
-              <span>Official Taxonomy</span>
+              <span>Categories</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight mt-1">
               Browse by Digital Category
@@ -333,7 +333,7 @@ const Home = () => {
               Simple & Transparent
             </span>
             <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
-              How the E-Products Platform Works
+              How GoMart Works
             </h2>
             <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
               Designed for effortless digital acquisition and seamless creator selling
@@ -356,9 +356,9 @@ const Home = () => {
               <div className="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-950 text-purple-600 dark:text-purple-400 font-black text-sm flex items-center justify-center">
                 2
               </div>
-              <h3 className="font-bold text-base text-slate-900 dark:text-white">Simulated Checkout</h3>
+              <h3 className="font-bold text-base text-slate-900 dark:text-white">Secure Checkout</h3>
               <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                Add to cart or click Buy Now. Test simulated Card or UPI transactions with instant order confirmation and receipt generation.
+                Complete your purchase securely using card or instant payment options with immediate receipt generation.
               </p>
             </div>
 
@@ -389,7 +389,7 @@ const Home = () => {
               Publish & Monetize Your Digital Assets
             </h2>
             <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              Upload your code templates, study guides, and e-books directly into Cloud Firestore. Manage listings, monitor view counts, and update pricing from your seller dashboard.
+              Upload your code templates, study guides, and e-books to reach buyers globally. Manage listings and track analytics in real time from your seller dashboard.
             </p>
             <div className="flex items-center gap-4 pt-2">
               <Link
@@ -413,8 +413,8 @@ const Home = () => {
               <div className="w-14 h-14 rounded-2xl bg-brand-500 text-white flex items-center justify-center shadow-md">
                 <Layers className="w-7 h-7" />
               </div>
-              <p className="font-black text-xl text-white">E-Products</p>
-              <p className="text-[11px] text-brand-200">Instant Download Marketplace</p>
+              <p className="font-black text-xl text-white">GoMart</p>
+              <p className="text-[11px] text-brand-200">Digital Marketplace</p>
             </div>
           </div>
 

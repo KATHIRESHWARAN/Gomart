@@ -201,7 +201,7 @@ const Marketplace = () => {
             {currentCategory === 'All' ? 'Browse All Marketplace Products' : currentCategory}
           </h1>
           <p className="text-xs text-slate-500 mt-0.5">
-            Showing {products.length} verified products with express doorstep delivery
+            Showing {products.length} verified products with instant download access
           </p>
         </div>
 
@@ -262,7 +262,7 @@ const Marketplace = () => {
 
           {(currentMinPrice || currentMaxPrice) && (
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold">
-              Price: ₹{currentMinPrice || '0'} - ₹{currentMaxPrice || 'Max'}
+              Price: ${currentMinPrice || '0'} - ${currentMaxPrice || 'Max'}
               <button onClick={() => handlePricePreset('', '')}><X className="w-3 h-3 hover:text-red-500" /></button>
             </span>
           )}
@@ -314,7 +314,7 @@ const Marketplace = () => {
             {/* A. Categories Filter */}
             <div className="space-y-2">
               <h4 className="text-xs font-extrabold uppercase tracking-wider text-slate-400">
-                Department
+                Categories
               </h4>
               <div className="space-y-1">
                 <button
@@ -398,7 +398,7 @@ const Marketplace = () => {
             {/* C. Creators Filter */}
             <div className="space-y-2 pt-3 border-t border-slate-100 dark:border-slate-800">
               <h4 className="text-xs font-extrabold uppercase tracking-wider text-slate-400">
-                Creator Studios
+                Creators
               </h4>
               <div className="space-y-1.5 max-h-48 overflow-y-auto no-scrollbar pr-1">
                 {CREATORS.map(brand => {

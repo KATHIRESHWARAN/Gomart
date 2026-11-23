@@ -22,9 +22,9 @@ import {
 import { toast } from 'react-toastify';
 
 const AVAILABLE_COUPONS = [
-  { code: 'GOMART50', desc: 'Flat ₹500 discount on orders above ₹1,000', minOrder: 1000, discount: 500 },
-  { code: 'WELCOME10', desc: '10% instant discount on your cart total', minOrder: 0, percent: 10 },
-  { code: 'FREESHIP', desc: 'Free express shipping on any order', minOrder: 0, freeShipping: true }
+  { code: 'GOMART10', desc: '10% instant discount on digital products', minOrder: 0, percent: 10 },
+  { code: 'WELCOME20', desc: '20% discount on orders above $25', minOrder: 25, percent: 20 },
+  { code: 'DEVPROMO', desc: 'Flat $5 discount on your order', minOrder: 15, discount: 5 }
 ];
 
 const Cart = () => {
@@ -48,7 +48,7 @@ const Cart = () => {
         <EmptyState
           icon={ShoppingBag}
           title="Your Shopping Cart is Empty"
-          description="Explore millions of products across electronics, fashion, home essentials, and groceries on Go Mart."
+          description="Explore our curated collection of digital products, e-books, templates, and learning guides."
           actionText="Start Shopping Now"
           actionLink="/products"
         />
@@ -66,20 +66,18 @@ const Cart = () => {
 
   // Coupon discount calculation
   let couponDiscount = 0;
-  let deliveryFee = subtotal > 500 ? 0 : 40;
+  const deliveryFee = 0; // Digital products have instant zero-cost delivery
 
   if (appliedCoupon) {
-    if (appliedCoupon.code === 'GOMART50') {
-      couponDiscount = Math.min(500, subtotal * 0.5);
-    } else if (appliedCoupon.code === 'WELCOME10') {
-      couponDiscount = subtotal * 0.10;
-    } else if (appliedCoupon.code === 'FREESHIP') {
-      deliveryFee = 0;
+    if (appliedCoupon.percent) {
+      couponDiscount = (subtotal * appliedCoupon.percent) / 100;
+    } else if (appliedCoupon.discount) {
+      couponDiscount = Math.min(subtotal, appliedCoupon.discount);
     }
   }
 
   const finalPayable = Math.max(0, subtotal - couponDiscount + deliveryFee);
-  const totalSavings = discountOnMRP + couponDiscount + (subtotal > 500 ? 40 : 0);
+  const totalSavings = discountOnMRP + couponDiscount;
 
   const handleApplyCoupon = (codeToApply) => {
     const code = (codeToApply || couponInput).trim().toUpperCase();
@@ -87,12 +85,12 @@ const Cart = () => {
 
     const matched = AVAILABLE_COUPONS.find(c => c.code === code);
     if (!matched) {
-      toast.error('Invalid coupon code. Try GOMART50 or WELCOME10.');
+      toast.error('Invalid coupon code. Try GOMART10 or WELCOME20.');
       return;
     }
 
     if (matched.minOrder && subtotal < matched.minOrder) {
-      toast.warning(`This coupon requires a minimum cart value of ₹${matched.minOrder}.`);
+      toast.warning(`This coupon requires a minimum cart value of $${matched.minOrder}.`);
       return;
     }
 
@@ -140,7 +138,7 @@ const Cart = () => {
             </span>
           </h1>
           <p className="text-xs text-slate-500 mt-0.5">
-            Products shipped with verified seller guarantees & free replacement
+            Digital deliverables with verified licenses and instant download access
           </p>
         </div>
 
@@ -347,45 +345,35 @@ const Cart = () => {
 
             <div className="space-y-3 text-xs">
               <div className="flex justify-between text-slate-600 dark:text-slate-400">
-                <span>Total MRP</span>
-                <span className="font-semibold text-navy-900 dark:text-white">₹{totalMRP.toFixed(2)}</span>
+                <span>Total Value</span>
+                <span className="font-semibold text-navy-900 dark:text-white">${totalMRP.toFixed(2)}</span>
               </div>
 
               <div className="flex justify-between text-emerald-600 dark:text-emerald-400 font-semibold">
-                <span>Discount on MRP</span>
-                <span>- ₹{discountOnMRP.toFixed(2)}</span>
+                <span>Discount Savings</span>
+                <span>- ${discountOnMRP.toFixed(2)}</span>
               </div>
 
               {couponDiscount > 0 && (
                 <div className="flex justify-between text-emerald-600 dark:text-emerald-400 font-semibold">
-                  <span>Coupon Savings ({appliedCoupon.code})</span>
-                  <span>- ₹{couponDiscount.toFixed(2)}</span>
+                  <span>Coupon ({appliedCoupon.code})</span>
+                  <span>- ${couponDiscount.toFixed(2)}</span>
                 </div>
               )}
 
               <div className="flex justify-between text-slate-600 dark:text-slate-400">
-                <span>Delivery Charges</span>
-                {deliveryFee === 0 ? (
-                  <span className="font-bold text-emerald-600">FREE</span>
-                ) : (
-                  <span className="font-semibold text-navy-900 dark:text-white">₹{deliveryFee.toFixed(2)}</span>
-                )}
+                <span>Digital Delivery</span>
+                <span className="font-bold text-emerald-600">FREE (Instant)</span>
               </div>
 
-              {deliveryFee > 0 && (
-                <p className="text-[10px] text-amber-600 font-medium">
-                  Add items worth ₹{(500 - subtotal).toFixed(2)} more for Free Delivery!
-                </p>
-              )}
-
               <div className="pt-3 border-t border-slate-200 dark:border-slate-800 flex justify-between text-sm sm:text-base font-black text-navy-900 dark:text-white">
-                <span>Total Payable Amount</span>
-                <span>₹{finalPayable.toFixed(2)}</span>
+                <span>Total Payable</span>
+                <span>${finalPayable.toFixed(2)}</span>
               </div>
 
               {totalSavings > 0 && (
                 <div className="p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 text-xs font-bold text-center">
-                  You will save ₹{totalSavings.toFixed(2)} on this order!
+                  You save ${totalSavings.toFixed(2)} on this order
                 </div>
               )}
             </div>

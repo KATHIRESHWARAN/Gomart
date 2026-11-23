@@ -49,7 +49,7 @@ const AdminLogin = () => {
           </span>
           <h2 className="text-2xl font-black text-white tracking-tight mt-1">Admin Portal</h2>
           <p className="text-xs text-slate-400">
-            Authorized administrator authentication only. Protected by Firebase custom claims and server-side verification.
+            Authorized administrator access only. Sign in with administrative credentials.
           </p>
         </div>
 
@@ -104,7 +104,7 @@ const AdminLogin = () => {
             disabled={loading}
             className="w-full py-3.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-sm shadow-lg shadow-purple-600/30 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
           >
-            {loading ? 'Verifying Admin Claims...' : 'Enter Admin Control Center'}
+            {loading ? 'Authenticating...' : 'Sign In to Dashboard'}
             <ArrowRight className="w-4 h-4" />
           </button>
         </form>

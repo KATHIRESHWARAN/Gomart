@@ -93,7 +93,7 @@ const AdminOrders = () => {
         <div>
           <h2 className="text-xl font-black text-white">Platform Orders & Fulfillment Hub</h2>
           <p className="text-xs text-slate-400 mt-0.5">
-            Audit transactions, inspect delivery addresses, and update fulfillment lifecycle.
+            Audit transactions, verify customer licensing, and track order fulfillment.
           </p>
         </div>
         <span className="text-xs font-bold bg-slate-800 text-slate-300 px-3 py-1.5 rounded-xl self-start">
@@ -132,7 +132,7 @@ const AdminOrders = () => {
           <thead className="bg-slate-950 text-slate-400 uppercase tracking-wider text-[10px] border-b border-slate-800">
             <tr>
               <th className="py-3.5 px-4 font-bold">Order ID</th>
-              <th className="py-3.5 px-4 font-bold">Customer & Shipping</th>
+              <th className="py-3.5 px-4 font-bold">Customer & Account</th>
               <th className="py-3.5 px-4 font-bold">Products</th>
               <th className="py-3.5 px-4 font-bold">Amount</th>
               <th className="py-3.5 px-4 font-bold">Payment</th>
@@ -185,7 +185,7 @@ const AdminOrders = () => {
 
                   {/* Payment Method */}
                   <td className="py-3.5 px-4 align-top text-slate-400">
-                    <span className="block font-medium text-slate-300">{ord.paymentMethod || 'COD'}</span>
+                    <span className="block font-medium text-slate-300">{ord.paymentMethod || 'Online Payment'}</span>
                     <span className="text-[10px] text-emerald-400">{ord.paymentStatus || 'Completed'}</span>
                   </td>
 

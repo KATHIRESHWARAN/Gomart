@@ -43,11 +43,11 @@ const Checkout = () => {
 
   // Fill test details
   const fillTestCard = () => {
-    setCardHolder(user?.name || 'Assessment Evaluator');
+    setCardHolder(user?.name || 'Verified Buyer');
     setCardNumber('4242 4242 4242 4242');
     setCardExpiry('12/28');
     setCardCvv('987');
-    toast.info('Test card credentials auto-filled');
+    toast.info('Demo card credentials auto-filled');
   };
 
   if (items.length === 0) {
@@ -168,7 +168,7 @@ const Checkout = () => {
             </div>
           </div>
 
-          {/* 2. Simulated Payment Gateway */}
+          {/* 2. Payment Gateway */}
           <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 shadow-xs space-y-6">
             <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
               <div className="flex items-center gap-2.5">
@@ -176,8 +176,8 @@ const Checkout = () => {
                   <CreditCard className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-slate-900 dark:text-white">Payment Gateway Simulation</h3>
-                  <p className="text-[11px] text-slate-500 dark:text-slate-400">Simulate real-world Stripe / UPI transactions</p>
+                  <h3 className="text-sm font-bold text-slate-900 dark:text-white">Payment Method</h3>
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400">Secure card or UPI payment processing</p>
                 </div>
               </div>
               <div className="flex items-center gap-1 text-[11px] font-bold text-slate-400">
@@ -225,7 +225,7 @@ const Checkout = () => {
                     onClick={fillTestCard}
                     className="text-[11px] font-bold text-brand-600 dark:text-brand-400 hover:underline cursor-pointer"
                   >
-                    Auto-Fill Test Card
+                    Auto-Fill Demo Card
                   </button>
                 </div>
 
@@ -304,23 +304,23 @@ const Checkout = () => {
                     <QrCode className="w-full h-full text-slate-900" />
                   </div>
                   <div className="text-xs">
-                    <p className="font-bold text-slate-900 dark:text-white">Simulated QR Code Payment</p>
+                    <p className="font-bold text-slate-900 dark:text-white">Instant QR Code Payment</p>
                     <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
-                      Accepts Google Pay, PhonePe, Paytm, and BHIM UPI simulation.
+                      Supports Google Pay, PhonePe, Paytm, and BHIM UPI.
                     </p>
                   </div>
                 </div>
               </div>
             )}
 
-            {/* Assessment Simulation Outcome Controller */}
+            {/* Payment Simulation Mode */}
             <div className="pt-4 border-t border-slate-100 dark:border-slate-800">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-[11px] font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
                   <Info className="w-3.5 h-3.5 text-brand-600" />
-                  Evaluator Simulation Mode:
+                  Payment Mode:
                 </span>
-                <span className="text-[10px] text-slate-500">Test both happy and error paths</span>
+                <span className="text-[10px] text-slate-500">Simulate transaction response</span>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <button
@@ -333,7 +333,7 @@ const Checkout = () => {
                   }`}
                 >
                   <CheckCircle2 className="w-3.5 h-3.5" />
-                  <span>Success (201 OK)</span>
+                  <span>Authorize Payment</span>
                 </button>
 
                 <button
@@ -346,7 +346,7 @@ const Checkout = () => {
                   }`}
                 >
                   <XCircle className="w-3.5 h-3.5" />
-                  <span>Simulate Decline (400)</span>
+                  <span>Simulate Decline</span>
                 </button>
               </div>
             </div>

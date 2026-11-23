@@ -77,7 +77,7 @@ const Login = () => {
             <Sparkles className="w-6 h-6" />
           </div>
           <h2 className="text-2xl font-black text-navy-900 dark:text-white tracking-tight">Sign in to Go Mart</h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400">Access your orders, saved addresses, and profile.</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400">Access your digital purchases, downloads, and creator studio.</p>
         </div>
 
         {/* Google Authentication Button */}

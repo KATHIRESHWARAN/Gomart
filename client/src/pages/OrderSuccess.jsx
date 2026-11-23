@@ -84,28 +84,28 @@ const OrderSuccess = () => {
               Thank You For Your Order!
             </h1>
             <p className="mt-2 text-xs sm:text-sm text-slate-500 dark:text-slate-400 max-w-md mx-auto">
-              We have received your order. A confirmation email and tracking link have been dispatched.
+              We have received your order. Your digital licenses and files are ready for instant download.
             </p>
           </div>
         </div>
 
-        {/* Estimated Delivery Ribbon */}
+        {/* Digital Delivery Status Ribbon */}
         <div className="bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 flex items-center justify-center shrink-0">
-              <Truck className="w-5 h-5" />
+              <DownloadCloud className="w-5 h-5" />
             </div>
             <div>
               <p className="text-[11px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-300">
-                Estimated Delivery
+                Digital Delivery Status
               </p>
               <h3 className="text-base font-black text-emerald-950 dark:text-emerald-100">
-                Arriving by {estimatedDelivery}
+                Instant Access Unlocked
               </h3>
             </div>
           </div>
           <span className="text-xs font-bold px-3 py-1.5 rounded-xl bg-emerald-600 text-white shadow-xs">
-            {order.orderStatus || 'Order Placed'}
+            {order.orderStatus || 'Completed'}
           </span>
         </div>
 
@@ -130,23 +130,23 @@ const OrderSuccess = () => {
           <div>
             <span className="text-slate-400 block font-medium">Payment Method</span>
             <span className="font-semibold text-slate-700 dark:text-slate-300">
-              {order.paymentMethod || 'Cash on Delivery'}
+              {order.paymentMethod || 'Online Payment'}
             </span>
           </div>
         </div>
 
-        {/* Shipping Address Details */}
+        {/* Digital Delivery Account Details */}
         {order.shippingAddress && (
           <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs space-y-1 text-left">
             <h4 className="font-bold text-navy-900 dark:text-white flex items-center gap-1.5 text-xs">
-              <MapPin className="w-4 h-4 text-brand-600" /> Delivery Address
+              <ShieldCheck className="w-4 h-4 text-brand-600" /> License & Delivery Details
             </h4>
-            <p className="font-bold text-navy-900 dark:text-white">{order.shippingAddress.fullName}</p>
+            <p className="font-bold text-navy-900 dark:text-white">{order.shippingAddress.deliveryType || 'Instant Digital Download'}</p>
             <p className="text-slate-600 dark:text-slate-300">
-              {order.shippingAddress.street}, {order.shippingAddress.city}, {order.shippingAddress.state} - <strong className="font-mono">{order.shippingAddress.pincode}</strong>
+              Account: <strong className="font-mono text-navy-900 dark:text-white">{order.shippingAddress.email || order.buyerEmail}</strong>
             </p>
             <p className="text-slate-500">
-              Contact: <strong className="text-navy-900 dark:text-white">{order.shippingAddress.phone}</strong>
+              License: <strong className="text-navy-900 dark:text-white">{order.shippingAddress.licenseType || 'Commercial / Developer License'}</strong>
             </p>
           </div>
         )}
@@ -210,7 +210,7 @@ const OrderSuccess = () => {
             to="/dashboard/orders"
             className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs transition-all flex items-center justify-center gap-2 shadow-md shadow-brand-500/20"
           >
-            Track Order in My Orders
+            View in My Orders
             <ArrowRight className="w-4 h-4" />
           </Link>
           <button
