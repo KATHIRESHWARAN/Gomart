@@ -5,7 +5,16 @@
 
 [build.environment]
   NODE_VERSION = "20"
+  VITE_API_URL = "https://gomart-p1eo.onrender.com/api"
 
+# API Proxy Fallback to Render Backend
+[[redirects]]
+  from = "/api/*"
+  to = "https://gomart-p1eo.onrender.com/api/:splat"
+  status = 200
+  force = true
+
+# React Router Single Page Application (SPA) Fallback
 [[redirects]]
   from = "/*"
   to = "/index.html"

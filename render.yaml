@@ -1,10 +1,10 @@
 services:
   - type: web
-    name: eproducts-backend
+    name: gomart-backend
     env: node
     rootDir: server
     buildCommand: npm install
-    startCommand: node server.js
+    startCommand: npm start
     healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV
@@ -13,11 +13,11 @@ services:
         value: 5000
       - key: ADMIN_EMAIL
         value: admin@eproducts.com
+      - key: CLIENT_URL
+        value: https://gomart1.netlify.app
       - key: FIREBASE_PROJECT_ID
         value: gomart-4615b
       - key: FIREBASE_STORAGE_BUCKET
         value: gomart-4615b.firebasestorage.app
-      - key: CLIENT_URL
-        sync: false
       - key: FIREBASE_SERVICE_ACCOUNT_KEY
         sync: false
