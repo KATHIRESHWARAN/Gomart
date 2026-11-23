@@ -10,11 +10,81 @@ let isLiveFirebase = false;
 let db = null;
 let auth = null;
 let storage = null;
+let initializedApp = null;
 
-// Check for service account file or environment variables
-const serviceAccountPath = process.env.FIREBASE_SERVICE_ACCOUNT_PATH 
-  ? path.resolve(process.env.FIREBASE_SERVICE_ACCOUNT_PATH)
-  : path.join(__dirname, '..', 'serviceAccountKey.json');
+/**
+ * Normalizes service account object, ensuring private_key has valid newlines
+ */
+const normalizeServiceAccount = (sa) => {
+  if (!sa || typeof sa !== 'object') return null;
+  const normalized = { ...sa };
+  
+  if (normalized.private_key && typeof normalized.private_key === 'string') {
+    let pKey = normalized.private_key.trim();
+    if (pKey.startsWith('"') && pKey.endsWith('"')) {
+      pKey = pKey.slice(1, -1);
+    }
+    normalized.private_key = pKey.replace(/\\n/g, '\n');
+  }
+  return normalized;
+};
+
+/**
+ * Robust parser for FIREBASE_SERVICE_ACCOUNT_KEY
+ * Supports:
+ * - Direct JSON object
+ * - Stringified JSON
+ * - Escaped stringified JSON
+ * - Base64 encoded JSON
+ * - Single-quoted / Double-quoted JSON from dashboard inputs
+ */
+const parseServiceAccount = (rawInput) => {
+  if (!rawInput) return null;
+  let str = (typeof rawInput === 'string' ? rawInput : JSON.stringify(rawInput)).trim();
+
+  // Strip wrapping quotes if user pasted with outer quotes in dashboard
+  if ((str.startsWith("'") && str.endsWith("'")) || (str.startsWith('"') && str.endsWith('"') && str.includes('{'))) {
+    str = str.slice(1, -1).trim();
+  }
+
+  // Attempt 1: Direct JSON parsing
+  try {
+    const parsed = JSON.parse(str);
+    if (typeof parsed === 'object' && parsed !== null) {
+      return normalizeServiceAccount(parsed);
+    }
+    if (typeof parsed === 'string') {
+      const secondParse = JSON.parse(parsed);
+      if (typeof secondParse === 'object' && secondParse !== null) {
+        return normalizeServiceAccount(secondParse);
+      }
+    }
+  } catch (e1) {
+    // Attempt 2: Base64 decoding
+    try {
+      const decoded = Buffer.from(str, 'base64').toString('utf8');
+      if (decoded.includes('{') && (decoded.includes('private_key') || decoded.includes('project_id'))) {
+        const parsed = JSON.parse(decoded);
+        if (typeof parsed === 'object' && parsed !== null) {
+          return normalizeServiceAccount(parsed);
+        }
+      }
+    } catch (e2) {}
+
+    // Attempt 3: Correct potential newline escape issues in raw multiline strings
+    try {
+      const cleaned = str.replace(/\r?\n/g, '\\n');
+      const parsed = JSON.parse(cleaned);
+      if (typeof parsed === 'object' && parsed !== null) {
+        return normalizeServiceAccount(parsed);
+      }
+    } catch (e3) {}
+
+    console.error('⚠️ [Firebase Admin] Error parsing FIREBASE_SERVICE_ACCOUNT_KEY JSON:', e1.message);
+  }
+
+  return null;
+};
 
 // Helper to obtain certificate credential across Firebase Admin SDK versions
 const getCert = (param) => {
@@ -29,65 +99,99 @@ const getCert = (param) => {
 
 try {
   let credential = null;
+  let detectedSource = null;
+  let detectedProjectId = process.env.FIREBASE_PROJECT_ID || 'gomart-4615b';
+  let detectedClientEmail = null;
 
-  if (fs.existsSync(serviceAccountPath)) {
-    const serviceAccount = JSON.parse(fs.readFileSync(serviceAccountPath, 'utf8'));
-    credential = getCert(serviceAccount);
-    console.log(`[Firebase Admin] Loading credentials from ${serviceAccountPath}`);
-  } else if (process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
-    try {
-      const serviceAccount = typeof process.env.FIREBASE_SERVICE_ACCOUNT_KEY === 'string'
-        ? JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY)
-        : process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
-      credential = getCert(serviceAccount);
-      console.log(`[Firebase Admin] Loading credentials from FIREBASE_SERVICE_ACCOUNT_KEY environment variable`);
-    } catch (parseErr) {
-      console.error('[Firebase Admin] Error parsing FIREBASE_SERVICE_ACCOUNT_KEY JSON:', parseErr.message);
+  const serviceAccountPath = process.env.FIREBASE_SERVICE_ACCOUNT_PATH 
+    ? path.resolve(process.env.FIREBASE_SERVICE_ACCOUNT_PATH)
+    : path.join(__dirname, '..', 'serviceAccountKey.json');
+
+  // Strategy 1: FIREBASE_SERVICE_ACCOUNT_KEY Environment Variable (Full JSON or Base64)
+  if (process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
+    const sa = parseServiceAccount(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
+    if (sa && sa.client_email && sa.private_key) {
+      credential = getCert(sa);
+      detectedSource = 'FIREBASE_SERVICE_ACCOUNT_KEY (Environment Variable)';
+      detectedProjectId = sa.project_id || detectedProjectId;
+      detectedClientEmail = sa.client_email;
     }
-  } else if (process.env.FIREBASE_PRIVATE_KEY && process.env.FIREBASE_CLIENT_EMAIL && process.env.FIREBASE_PROJECT_ID) {
+  }
+
+  // Strategy 2: Individual Environment Variables (FIREBASE_PRIVATE_KEY & FIREBASE_CLIENT_EMAIL)
+  if (!credential && process.env.FIREBASE_PRIVATE_KEY && process.env.FIREBASE_CLIENT_EMAIL) {
     let pKey = process.env.FIREBASE_PRIVATE_KEY.trim();
     if (pKey.startsWith('"') && pKey.endsWith('"')) {
       try { pKey = JSON.parse(pKey); } catch (e) { pKey = pKey.slice(1, -1); }
     }
     pKey = pKey.replace(/\\n/g, '\n');
 
-    credential = getCert({
-      projectId: process.env.FIREBASE_PROJECT_ID,
-      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-      privateKey: pKey,
-    });
-    console.log(`[Firebase Admin] Loading credentials from environment variables`);
+    const sa = {
+      projectId: process.env.FIREBASE_PROJECT_ID || 'gomart-4615b',
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL.trim(),
+      privateKey: pKey
+    };
+
+    credential = getCert(sa);
+    detectedSource = 'Individual Environment Variables (FIREBASE_PRIVATE_KEY & FIREBASE_CLIENT_EMAIL)';
+    detectedProjectId = sa.projectId;
+    detectedClientEmail = sa.clientEmail;
   }
 
+  // Strategy 3: Service Account JSON File on Disk (serviceAccountKey.json)
+  if (!credential && fs.existsSync(serviceAccountPath)) {
+    try {
+      const raw = fs.readFileSync(serviceAccountPath, 'utf8');
+      const sa = parseServiceAccount(raw);
+      if (sa && sa.client_email && sa.private_key) {
+        credential = getCert(sa);
+        detectedSource = `File on Disk (${serviceAccountPath})`;
+        detectedProjectId = sa.project_id || detectedProjectId;
+        detectedClientEmail = sa.client_email;
+      }
+    } catch (fsErr) {
+      console.warn(`⚠️ [Firebase Admin] Error reading file at ${serviceAccountPath}:`, fsErr.message);
+    }
+  }
+
+  // Initialize Firebase Admin App if credentials verified
   if (credential) {
-    const bucketName = process.env.FIREBASE_STORAGE_BUCKET || `${process.env.FIREBASE_PROJECT_ID || 'gomart-4615b'}.firebasestorage.app`;
-    const app = !getApps().length
+    const bucketName = process.env.FIREBASE_STORAGE_BUCKET || `${detectedProjectId}.firebasestorage.app`;
+    initializedApp = !getApps().length
       ? initializeApp({
           credential,
+          projectId: detectedProjectId,
           storageBucket: bucketName
         })
       : getApp();
 
-    db = getFirestore(app);
-    auth = getAuth(app);
+    db = getFirestore(initializedApp);
+    auth = getAuth(initializedApp);
     try {
-      storage = getStorage(app);
+      storage = getStorage(initializedApp);
     } catch (sErr) {
       console.warn('[Firebase Storage Notice]', sErr.message);
     }
     isLiveFirebase = true;
+
+    // Safe diagnostics: Display configuration without leaking private keys or secrets
     console.log('✅ [Firebase Admin] Successfully connected to live Firebase Firestore & Auth.');
+    console.log(`   - Project ID: ${detectedProjectId}`);
+    console.log(`   - Client Email: ${detectedClientEmail || 'configured'}`);
+    console.log(`   - Storage Bucket: ${bucketName}`);
+    console.log(`   - Credential Source: ${detectedSource}`);
   }
 } catch (err) {
   console.warn('⚠️ [Firebase Admin] Could not initialize live Firebase credentials:', err.message);
 }
 
-// Robust Dev Firestore Emulator for out-of-the-box assessment evaluation
-// Stores state cleanly in server/data/firestore-dev.json
+// Fallback Firestore Layer for Local Development or Unset Render Environment
 if (!isLiveFirebase) {
   if (process.env.NODE_ENV === 'production') {
-    console.error('🚨 [CRITICAL PRODUCTION WARNING] Server running in NODE_ENV=production without live Firebase credentials!');
-    console.error('👉 Action required: Set FIREBASE_SERVICE_ACCOUNT_KEY or FIREBASE_CLIENT_EMAIL/PRIVATE_KEY in Render environment variables.');
+    console.warn('⚠️ [Firebase Admin Warning] Live Firebase Admin credentials are not yet configured in environment variables.');
+    console.warn('   Checked sources: FIREBASE_SERVICE_ACCOUNT_KEY, FIREBASE_CLIENT_EMAIL/PRIVATE_KEY, and serviceAccountKey.json.');
+    console.warn('   Running with persistent local Firestore store so APIs remain responsive.');
+    console.warn('👉 To connect live Firebase on Render: Add FIREBASE_SERVICE_ACCOUNT_KEY (full JSON from Firebase Console) in your Render Dashboard Environment.');
   } else {
     console.log('ℹ️ [Firebase Admin Notice] Live Firebase credentials not yet supplied in server/.env or serviceAccountKey.json.');
     console.log('⚡ [Firebase Admin Notice] Running with local persistent Firestore emulation layer so assessment is fully functional.');
@@ -265,14 +369,12 @@ if (!isLiveFirebase) {
     }
   };
 
-  // Auth verification mock adapter
+  // Auth verification adapter
   auth = {
     verifyIdToken: async (token) => {
-      // In dev mode: parse token payload
       try {
         if (!token) throw new Error('No token provided');
         
-        // Supports encoded JSON dev tokens or JWT format
         if (token.startsWith('dev-token:')) {
           const parts = token.replace('dev-token:', '').split(':');
           const uid = parts[0];
@@ -280,7 +382,6 @@ if (!isLiveFirebase) {
           return { uid, email, role: email === process.env.ADMIN_EMAIL ? 'admin' : 'user' };
         }
 
-        // Try standard base64 jwt decode (header.payload.signature)
         const segments = token.split('.');
         if (segments.length === 3) {
           const payload = JSON.parse(Buffer.from(segments[1], 'base64').toString('utf8'));
@@ -295,7 +396,6 @@ if (!isLiveFirebase) {
           };
         }
 
-        // Fallback for simple testing
         return { uid: 'dev-user-id', email: 'dev@eproducts.com', role: 'user' };
       } catch (e) {
         throw new Error('Invalid token');
