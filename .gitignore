@@ -32,6 +32,9 @@ logs/
 server/uploads/*
 !server/uploads/.gitkeep
 
+# Locks
+yarn.lock
+
 # OS generated
 .DS_Store
 Thumbs.db
