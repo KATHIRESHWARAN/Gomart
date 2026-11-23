@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # E-Products – Digital Products Marketplace
 ### Premium Ecommerce SaaS Platform
 
@@ -203,3 +204,6 @@ Frontend Production Build:
 ✓ 3082 modules transformed
 ✓ Production bundle generated with 0 errors
 ```
+=======
+# Gomart
+>>>>>>> 778e4cf737acaa88b60193bdf7d4269e67615cb5
