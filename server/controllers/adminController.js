@@ -287,14 +287,19 @@ const getAnalytics = async (req, res) => {
       const cat = p.category || 'Other';
       categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
 
+      const fullTitle = (p.name || p.title || 'Product').trim();
+      const shortTitle = fullTitle.length > 20 ? `${fullTitle.slice(0, 18)}…` : fullTitle;
+
       viewList.push({
-        name: (p.name || p.title || 'Product').slice(0, 24),
+        name: shortTitle,
+        fullName: fullTitle,
         views: p.viewCount || 0,
         price: Number(p.price || 0)
       });
 
       salesList.push({
-        name: (p.name || p.title || 'Product').slice(0, 24),
+        name: shortTitle,
+        fullName: fullTitle,
         sales: p.salesCount || 0,
         revenue: (p.salesCount || 0) * Number(p.price || 0)
       });

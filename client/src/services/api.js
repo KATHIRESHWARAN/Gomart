@@ -1062,12 +1062,28 @@ export const adminService = {
     const mostViewed = [...products]
       .sort((a, b) => (b.viewCount || 0) - (a.viewCount || 0))
       .slice(0, 5)
-      .map((p) => ({ name: p.name || p.title, views: p.viewCount || 0, category: p.category }));
+      .map((p) => {
+        const full = (p.name || p.title || 'Product').trim();
+        return {
+          name: full.length > 20 ? `${full.slice(0, 18)}…` : full,
+          fullName: full,
+          views: p.viewCount || 0,
+          category: p.category
+        };
+      });
 
     const topSelling = [...products]
       .sort((a, b) => (b.salesCount || 0) - (a.salesCount || 0))
       .slice(0, 5)
-      .map((p) => ({ name: p.name || p.title, sales: p.salesCount || 0, revenue: (p.salesCount || 0) * (Number(p.price) || 0) }));
+      .map((p) => {
+        const full = (p.name || p.title || 'Product').trim();
+        return {
+          name: full.length > 20 ? `${full.slice(0, 18)}…` : full,
+          fullName: full,
+          sales: p.salesCount || 0,
+          revenue: (p.salesCount || 0) * (Number(p.price) || 0)
+        };
+      });
 
     return { data: { success: true, data: { monthlySales, categoryDistribution, mostViewed, topSelling } } };
   }
