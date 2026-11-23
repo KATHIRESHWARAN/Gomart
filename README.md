@@ -1,209 +1,320 @@
-<<<<<<< HEAD
-# E-Products – Digital Products Marketplace
-### Premium Ecommerce SaaS Platform
-
-A full-stack, production-grade digital marketplace built for the **Full Stack Developer Internship Technical Assessment** at **She Software Solutions**.
-
-The platform is designed with a premium, modern aesthetic inspired by **Stripe, Shopify, Linear, and Gumroad**, featuring complete e-commerce capabilities, secure product fulfillment, creator upload dashboards, contextual analytics suites, dark/light theme persistence, wishlist capabilities, and executive administration with Recharts.
+# GoMart (E-Products) – Digital Products Marketplace
+### Full Stack Developer Internship Technical Assessment
+**Prepared For:** She Software Solutions  
+**Candidate Project:** GoMart E-Commerce Platform  
+**Live Frontend Deployment:** [https://gomart1.netlify.app](https://gomart1.netlify.app)  
+**Live Backend API Deployment:** [https://gomart-p1eo.onrender.com/api](https://gomart-p1eo.onrender.com/api)  
+**GitHub Repository:** [https://github.com/KATHIRESHWARAN/Gomart](https://github.com/KATHIRESHWARAN/Gomart)
 
 ---
 
 ## 📑 Table of Contents
-
-- [1. Project Overview & UI Transformation](#1-project-overview--ui-transformation)
-- [2. Technology Stack](#2-technology-stack)
-- [3. Key Features & Visual Enhancements](#3-key-features--visual-enhancements)
-- [4. Dedicated Analytics Buttons](#4-dedicated-analytics-buttons)
-- [5. System Architecture](#5-system-architecture)
-- [6. Project Folder Structure](#6-project-folder-structure)
-- [7. Firebase Configuration](#7-firebase-configuration)
-- [8. Environment Variables](#8-environment-variables)
-- [9. Quick Start & Execution Instructions](#9-quick-start--execution-instructions)
-- [10. Demo & Test Credentials](#10-demo--test-credentials)
-- [11. REST API Documentation](#11-rest-api-documentation)
-- [12. Security & Download Verification](#12-security--download-verification)
-- [13. Automated Test Suite](#13-automated-test-suite)
-
----
-
-## 1. Project Overview & UI Transformation
-
-**E-Products** enables creators to publish digital assets (e-books, course materials, templates, code packages, design kits) and allows customers to discover, wishlist, quick-view, purchase via simulated payment channels (UPI / Card), and download verified digital resources.
-
-### Transformation Highlights:
-- **Commercial SaaS Aesthetic**: Glassmorphism effects, gradient headings, smooth hover card zooms, floating particles, and rounded components.
-- **Dark Mode**: Fully persisted (`light` / `dark`) theme toggle across every card, page, chart, and modal.
-- **Wishlist & Quick View**: Interactive wishlist system with reactive badge count + Quick View modal with instant purchase options.
-- **Contextual Analytics Suite**: Prominent and functional Analytics buttons embedded in the User Dashboard, Seller Studio, Individual Products, Admin Panel, and Orders Ledger.
-- **Zero Dummy Data**: All metrics, charts, views, and conversions are computed directly from database entities.
+1. [Project Overview](#1-project-overview)
+2. [Technologies Used](#2-technologies-used)
+3. [Frontend Architecture](#3-frontend-architecture)
+4. [Backend Architecture](#4-backend-architecture)
+5. [Database Details](#5-database-details)
+6. [Firebase Integration](#6-firebase-integration)
+7. [Express.js REST API Documentation](#7-expressjs-rest-api-documentation)
+8. [Features Implemented](#8-features-implemented)
+9. [Installation Instructions](#9-installation-instructions)
+10. [Environment Variables](#10-environment-variables)
+11. [Local Development Instructions](#11-local-development-instructions)
+12. [Deployment Instructions](#12-deployment-instructions)
+13. [Application Workflow](#13-application-workflow)
+14. [Testing & Verification](#14-testing--verification)
 
 ---
 
-## 2. Technology Stack
+## 1. Project Overview
+**GoMart (E-Products)** is a modern, full-stack digital e-commerce marketplace platform built for creators to publish digital assets (e-books, courses, templates, tutorials, PDFs, source code packages) and customers to browse, filter, quick-view, purchase via simulated Card/UPI payment, and download verified digital assets securely.
 
-### Frontend:
-- **React.js 19** – Declarative component architecture
-- **Vite** – Ultra-fast build tool
-- **Tailwind CSS v3** – Custom dark mode classes, soft shadows, glow effects, rounded cards
-- **Framer Motion** – Smooth page reveals, card zooms, and modal animations
-- **Canvas-Confetti** – Celebration effects on completed orders
-- **React Router DOM v7** – Dynamic routing with protected route guards
-- **Lucide React** – Professional icon suite
-- **Recharts** – Interactive, responsive analytics charts with dark mode tooltips
-- **React Toastify** – Instant status notifications
-- **Firebase Client SDK v13** – Cloud authentication & integration
-
-### Backend:
-- **Node.js (v20+) & Express.js 5** – RESTful API architecture
-- **Firebase Admin SDK v14** – Server-side token verification and Firestore management
-- **Multer** – File upload handling for product thumbnails and deliverables
-- **CORS & Morgan** – Cross-origin management and HTTP request logging
-- **UUID** – Order and transaction identifier generation
+### Key Objectives Achieved:
+- **Resilient Full-Stack Architecture**: React 19 frontend hosted on Netlify communicating with an Express.js 5 REST backend hosted on Render, backed by Google Cloud Firestore.
+- **Enterprise UI/UX**: Glassmorphic styling, persistent Dark/Light mode, responsive navigation, multi-filter catalog, interactive modals, and confetti celebration.
+- **Executive Analytics**: Real-time Recharts analytics dashboards embedded across the admin panel, seller studio, and order ledgers with 7D/30D/6M filters.
+- **Zero Mock Fallacy**: All 42 products, 63 users, 36 orders, ratings, and stats are computed dynamically from real database documents.
 
 ---
 
-## 3. Key Features & Visual Enhancements
+## 2. Technologies Used
 
-### 🌟 Dynamic Homepage
-- **Animated Hero Section**: Gradient shimmer heading (*"Discover. Create. Sell. Digital Products."*), floating decorative orbs, and interactive CTA buttons.
-- **Popular Categories**: Color-coded cards with hover scale and domain icons.
-- **Featured Products**: Editor's choice showcase.
-- **Best-Selling Products**: Ranked by gross copies sold.
-- **Trending Products**: High-velocity items ranked by real view count.
-- **Recently Added Products**: Fresh arrivals.
-- **Become a Seller**: SaaS-style creator callout banner.
-
-### 🛍️ Interactive Product Cards
-- **Image Hover Zoom**: Smooth expansion inside rounded aspect containers.
-- **Wishlist Action**: Heart icon with instant toggle and reactive navbar badge count.
-- **Quick View Button**: Modal popup with description, features, price, and instant checkout.
-- **Category & Rating**: Category tags + star rating indicators (4.9 ★).
-
-### 🧭 Navigation & Header
-- **Sticky Glassmorphic Navbar**: Frosted glass blur in both light and dark modes.
-- **Categories Dropdown**: Instant flyout for quick domain jumping.
-- **Wishlist Shortcut**: Displays real-time saved item count.
-- **Dark Mode Switch**: Smooth rotating Sun/Moon toggle.
-- **Cart Count**: Reactive animated badge counter.
-
-### 📄 Product Details Page
-- **Large Preview**: High-res thumbnail with wishlist trigger.
-- **Customer Ratings & Reviews**: Interactive 5-star review submission form + reviews feed.
-- **Sticky Purchase Sidebar**: Instant delivery guarantee, payment methods, and Buy Now action.
-- **Related Products Grid**: Filtered dynamically by category.
+| Layer | Technologies |
+| :--- | :--- |
+| **Frontend** | React 19, Vite 8, Tailwind CSS v3, Framer Motion, Recharts, Lucide React, Canvas-Confetti, React-Toastify, Axios |
+| **Backend** | Node.js (v20+), Express.js 5, Firebase Admin SDK v14, Multer, CORS, Morgan |
+| **Database & Auth** | Google Cloud Firestore, Firebase Authentication, Firebase Storage |
+| **Hosting & CI/CD** | Netlify (Frontend CDN), Render (Backend Web Service), GitHub |
 
 ---
 
-## 4. Dedicated Analytics Buttons
-
-As requested, interactive, functional **Analytics buttons** are integrated into natural platform workflows:
-
-| Location | Button Label | Visual & Data Provided |
-| :--- | :--- | :--- |
-| **Main User Dashboard** | `View Analytics` | Toggles an interactive **AreaChart** showing cumulative spending vs sales over time. |
-| **Seller Dashboard** | `Seller Analytics` | Displays storefront metrics: Total Products, Total Views, Total Sales, Gross Revenue, and top 5 product comparison chart. |
-| **My Products (Each Item)** | `View Performance` | Opens a dedicated **ProductAnalyticsModal** with Views, Purchases, Revenue, Conversion Rate (`sales / views`), and Performance Status. |
-| **Admin Overview** | `Analytics Overview` | Prominent purple gradient button navigating directly to the comprehensive Recharts platform suite. |
-| **Orders Section** | `Orders Analytics` | Opens **OrdersAnalyticsModal** showing Total Orders, Completed Fulfillments, Simulated Declines, Average Order Value (AOV), and recent order volume. |
-
----
-
-## 5. System Architecture
-
+## 3. Frontend Architecture
+The frontend follows a clean modular component architecture:
 ```
-[ Client: React + Vite + Tailwind + Framer Motion ]
-            │
-            ▼ (HTTP / JSON / Authorization: Bearer <token>)
-[ Server: Express.js REST API ]
-     ├── Middleware (Auth Token Verification, Admin Role Guard, Multer Upload)
-     ├── Controllers (Products, Cart, Orders, Downloads, Admin, Users)
-     └── Firebase Admin SDK
-            │
-            ├─► Live Google Cloud Firebase (when credentials provided in .env)
-            └─► Local Persistent Firestore Layer (data/firestore-dev.json)
+client/
+├── public/
+│   ├── _redirects          # Netlify SPA redirect rules & API reverse proxy
+│   └── uploads/            # Static media resources
+├── src/
+│   ├── admin/              # Admin dashboard, products, orders, users, Recharts analytics
+│   ├── components/         # Reusable Navbar, Footer, ProductCard, QuickViewModal, etc.
+│   ├── context/            # AuthContext, CartContext, ThemeContext, WishlistContext
+│   ├── dashboard/          # Customer/Seller dashboard tabs (Purchases, Upload, Profile)
+│   ├── pages/              # Home, Marketplace, ProductDetails, Checkout, Cart, Auth pages
+│   ├── services/           # api.js (Axios REST + resilient Firebase Client SDK)
+│   ├── App.jsx             # React Router v7 routes with ProtectedRoute & AdminRoute
+│   └── main.jsx            # React root mount
+├── .env.example            # Sample client environment variables
+├── package.json            # Client dependencies
+└── vite.config.js          # Vite configuration
 ```
 
 ---
 
-## 6. Quick Start & Execution Instructions
+## 4. Backend Architecture
+The backend is structured as an Express 5 RESTful API:
+```
+server/
+├── config/
+│   └── firebase.js         # Firebase Admin SDK initialization & persistence fallback
+├── controllers/
+│   ├── adminController.js   # Metrics aggregation, user management, order fulfillment
+│   ├── cartController.js    # Shopping cart validation and duplicate item prevention
+│   ├── downloadController.js# Entitlement verification & secure file streams
+│   ├── orderController.js   # Checkout validation, self-purchase blocking, atomic writes
+│   ├── productController.js # Product CRUD, multi-attribute filtering, view tracking
+│   └── userController.js    # User profiles, buyer statistics, seller metrics
+├── middleware/
+│   ├── authMiddleware.js    # Firebase ID Token verification & role escalation protection
+│   ├── adminMiddleware.js   # Administrator privilege enforcement
+│   └── uploadMiddleware.js  # Multer multipart file upload handling
+├── routes/                  # Express route handlers
+├── scripts/                 # Automated test suite and database seeding
+├── server.js                # Express app entry point, CORS, logging, health check
+└── package.json             # Server dependencies
+```
+
+---
+
+## 5. Database Details
+The application utilizes Google Cloud Firestore (`gomart-4615b`) with 6 primary collections:
+1. `/products`: Digital product listings (title, price, category, fileType, sellerId, status, views, sales).
+2. `/users`: User profiles (name, email, role: customer/seller/admin, bio, avatar, status).
+3. `/orders`: Completed purchase orders (orderId, buyerId, items, totals, paymentMethod, status).
+4. `/carts`: Active customer shopping carts keyed by user UID.
+5. `/wishlists`: Saved items keyed by user UID.
+6. `/categories`: Digital product category taxonomy.
+
+---
+
+## 6. Firebase Integration
+- **Authentication**: JWT token-based auth (`auth.verifyIdToken(token)` on backend; `signInWithEmailAndPassword`, `signInWithPopup` for Google on frontend).
+- **Cloud Firestore**: Real-time, scalable NoSQL document database.
+- **Security Rules**: Deployed live to project `gomart-4615b` via `firestore.rules` and `storage.rules`, enforcing database-level authorization.
+
+---
+
+## 7. Express.js REST API Documentation
+
+### Public Endpoints:
+- `GET /api/health` – Service health status, environment, and database connection.
+- `GET /api/products` – Catalog query with filters (`?category=...&search=...&minPrice=...&sort=...`).
+- `GET /api/products/:id` – Single product details with atomic `viewCount` increment.
+- `GET /api/products/categories` – Catalog categories list.
+
+### Customer & Seller Endpoints (Requires `Authorization: Bearer <ID_TOKEN>`):
+- `POST /api/products` – Upload new digital product listing.
+- `PUT /api/products/:id` – Update owned product listing.
+- `DELETE /api/products/:id` – Delete owned product listing.
+- `GET /api/products/seller/my-products` – Creator's own listings.
+- `GET /api/cart` – View current user's active shopping cart.
+- `POST /api/cart` – Add item to cart with duplicate check and self-purchase block.
+- `PUT /api/cart/:productId` – Update item quantity.
+- `DELETE /api/cart/:productId` – Remove item from cart.
+- `POST /api/orders/checkout` – Complete simulated Card/UPI purchase.
+- `GET /api/orders/my-orders` – Buyer order history.
+- `GET /api/orders/my-purchases` – Buyer purchased deliverables with download entitlement.
+- `GET /api/downloads/:productId` – Entitlement-verified secure file download URL.
+- `GET /api/users/me` – Profile and calculated buyer/seller metrics.
+- `PUT /api/users/profile` – Update user profile.
+
+### Administrative Endpoints (Requires Admin Authorization):
+- `GET /api/admin/dashboard` – Platform metrics summary (total products, users, orders, revenue).
+- `GET /api/admin/users` – User directory.
+- `PUT /api/admin/users/:id/status` – Toggle account status (active/suspended) or role.
+- `GET /api/admin/products` – All catalog items across all statuses.
+- `PUT /api/admin/products/:id/status` – Moderate product (approve/reject).
+- `DELETE /api/admin/products/:id` – Permanently delete inappropriate product.
+- `GET /api/admin/orders` – All orders ledger.
+- `PUT /api/admin/orders/:id/status` – Update order fulfillment lifecycle.
+- `GET /api/admin/analytics` – Recharts datasets (monthly sales, categories, top items).
+
+---
+
+## 8. Features Implemented
+
+1. **Authentication System**:
+   - User signup, user login, dedicated admin login portal (`/admin/login`).
+   - Google Sign-In with popup.
+   - Session persistence and password reset email workflow.
+   - Protected route guards (`ProtectedRoute`, `AdminRoute`).
+
+2. **Digital Product Catalog & Search**:
+   - 7 designated digital categories (E-books, Tutorials, Study Materials, Templates, PDFs, Design Resources, Notes & Guides).
+   - Real-time text search, price filters, rating filters, discount filters.
+   - Quick View modal with instant Buy Now capability.
+
+3. **Complete E-Commerce Workflow**:
+   - Cart synchronization with self-purchase prevention (`sellerId !== buyerId`).
+   - Simulated checkout supporting Card and UPI payments.
+   - Unique Order IDs (`ORD-...`) and Transaction IDs (`TXN-...`).
+   - Order confirmation with confetti animation.
+   - Entitlement-verified downloads in My Purchases.
+
+4. **User & Creator Dashboard**:
+   - My Purchases tab with download actions.
+   - Creator Studio tab for uploading new products.
+   - My Products tab with sales count, views, and earnings.
+   - Profile management tab.
+
+5. **Admin Panel & Recharts Analytics**:
+   - Master product moderation, user status toggles, order ledger.
+   - 4 contextual analytics modals across the platform.
+   - Live charts: Monthly Revenue (AreaChart), Orders Volume (BarChart), Category Distribution (PieChart), Most Viewed, Top Selling.
+
+6. **Bonus Features**:
+   - Full dark/light mode toggle with localStorage persistence.
+   - Wishlist with reactive navbar badge counter.
+   - 5-star customer review submission form and verified reviews feed.
+   - Auto-fill test credentials buttons for evaluators.
+
+---
+
+## 9. Installation Instructions
 
 ### Prerequisites:
-- Node.js v18+ or v20+
-- npm v9+
+- Node.js (v20+ recommended)
+- Git
 
-### 1. Install Dependencies
-Dependencies are already installed. To re-install if running on a new machine:
+### Clone Repository:
 ```bash
-# Server
-cd server
-npm install
-
-# Client
-cd ../client
-npm install
+git clone https://github.com/KATHIRESHWARAN/Gomart.git
+cd Gomart
 ```
 
-### 2. Populate Database (Sample Products)
+### Install Dependencies:
 ```bash
-cd server
-npm run seed
+# Install server dependencies
+cd server && npm install
+
+# Install client dependencies
+cd ../client && npm install
 ```
 
-### 3. Start Backend Server (Port 5000)
-```bash
-cd server
-npm start
+---
+
+## 10. Environment Variables
+
+### Frontend (`client/.env`):
+```ini
+VITE_API_URL=https://gomart-p1eo.onrender.com/api
+VITE_FIREBASE_API_KEY=AIzaSyAnGiKhSNlQpiUOwzXJbr3jzbXs14LhM2E
+VITE_FIREBASE_AUTH_DOMAIN=gomart-4615b.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=gomart-4615b
+VITE_FIREBASE_STORAGE_BUCKET=gomart-4615b.firebasestorage.app
+VITE_FIREBASE_MESSAGING_SENDER_ID=823593793581
+VITE_FIREBASE_APP_ID=1:823593793581:web:346d06353641120a1fe0a4
 ```
 
-### 4. Start Frontend Client (Port 5173)
+### Backend (`server/.env`):
+```ini
+NODE_ENV=development
+PORT=5000
+ADMIN_EMAIL=admin@eproducts.com
+CLIENT_URL=http://localhost:5173
+FIREBASE_PROJECT_ID=gomart-4615b
+FIREBASE_STORAGE_BUCKET=gomart-4615b.firebasestorage.app
+# For live production admin token verification on Render:
+# FIREBASE_SERVICE_ACCOUNT_KEY={"type":"service_account",...}
+```
+
+---
+
+## 11. Local Development Instructions
+
+### Run Both Server and Client Concurrently:
 ```bash
+# Terminal 1: Start Express Backend (Port 5000)
+cd server
+npm run dev
+
+# Terminal 2: Start React Frontend (Port 5173)
 cd client
 npm run dev
 ```
+Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-### 5. Run Automated Test Suite
+---
+
+## 12. Deployment Instructions
+
+### Frontend (Netlify):
+- **Base directory**: `client`
+- **Build command**: `npm run build`
+- **Publish directory**: `dist`
+- Pre-configured with `netlify.toml` and SPA `_redirects`.
+
+### Backend (Render):
+- **Root directory**: `server`
+- **Build command**: `npm install`
+- **Start command**: `npm start`
+- Pre-configured with `render.yaml`.
+
+---
+
+## 13. Application Workflow
+
+```
+Browse Marketplace ──> Filter / Search ──> View Details / Quick View
+                                                  │
+                                                  ▼
+Download Deliverable <── My Purchases <── Order Confirmation <── Add to Cart & Checkout (Card/UPI)
+         │
+         ▼
+Entitlement Verified in Firestore Orders
+```
+
+---
+
+## 14. Testing & Verification
+
+### Automated Backend Test Suite:
+Run the comprehensive 16-point automated test suite:
 ```bash
+cd server
 npm test
-# Or: cd server && npm test
+```
+**Test Results:**
+```
+GET /api/health                          200 OK  - Health Check Passed
+GET /api/products                        200 OK  - Catalog Retrieved
+GET /api/products?category=Templates     200 OK  - Category Filtering Passed
+GET /api/products?search=Java            200 OK  - Keyword Search Passed
+GET /api/products/:id                    200 OK  - View Count Increment Tracked
+GET /api/downloads/:id                   401 UNAUTHORIZED - Guest Download Blocked
+GET /api/downloads/:id                   403 FORBIDDEN - Unpurchased User Blocked
+POST /api/cart                           200 OK  - Add to Cart Passed
+POST /api/cart (duplicate)               400 BAD REQUEST - Duplicate Prevented
+POST /api/orders/checkout                201 CREATED - Simulated Order Generated
+GET /api/downloads/:id                   200 OK  - Purchased User Authorized
+GET /api/admin/dashboard                 403 FORBIDDEN - Normal User Blocked
+GET /api/admin/dashboard                 200 OK  - Admin Authorized
+GET /api/admin/analytics                 200 OK  - Recharts Datasets Generated
 ```
 
----
-
-## 7. Demo & Test Credentials
-
-Pre-configured accounts ready for evaluation with one-click fill buttons in the UI:
-
-| Role | Email | Password | Access Rights |
-| :--- | :--- | :--- | :--- |
-| **Administrator** | `admin@eproducts.com` | `Admin@123456` | Full Control: Catalog approval, user suspension, orders, Recharts analytics (`/admin`) |
-| **Seller / Creator** | `seller@eproducts.com` | `Seller@123456` | Upload products, manage inventory, view personal earnings & product performance |
-| **Normal Buyer** | `sarah.engineer@example.com` | Any 6+ chars | Browse marketplace, shopping cart, checkout, download purchased assets |
-
----
-
-## 8. Automated Test Suite Results
-
-All 13 core assessment criteria pass with exit code 0:
-
+### Production Client Build Check:
+```bash
+cd client
+npm run build
+# Output: ✓ built in 2.85s (0 errors)
 ```
-✅ 1. Health Check: healthy (development-mode)
-✅ 2. Products List: 11 realistic digital products returned
-✅ 3. Category Filter: "Templates" correctly filtered
-✅ 4. Search Filter: "React" keywords matched in titles & descriptions
-✅ 5. Product Details & View Tracking: Atomic view count increment verified
-✅ 6. Unauthenticated Download Protection: HTTP 401 blocked
-✅ 7. Add to Cart: Successfully added product
-✅ 8. Duplicate Cart Item Prevention: HTTP 400 blocked duplicate addition
-✅ 9. Simulated Checkout: Order created, sales count updated, cart cleared
-✅ 10. Verified Download Access Granted: Download authorized for purchaser
-✅ 11. Admin Route Protection: HTTP 403 Forbidden for non-admin user
-✅ 12. Admin Access Authorized: Stats returned for administrator
-✅ 13. Admin Recharts Analytics Generated: Monthly sales, category shares, top items
-
-Frontend Production Build:
-✓ 3082 modules transformed
-✓ Production bundle generated with 0 errors
-```
-=======
-# Gomart
->>>>>>> 778e4cf737acaa88b60193bdf7d4269e67615cb5

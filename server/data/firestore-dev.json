@@ -1172,6 +1172,66 @@
       "createdAt": "2026-11-22T15:01:19.590Z",
       "id": "failed_user_1795359678992_49n6",
       "updatedAt": "2026-11-22T15:01:19.592Z"
+    },
+    "student_buyer_1795445878742_7unf": {
+      "uid": "student_buyer_1795445878742_7unf",
+      "email": "buyer_1795445878742_7unf@assessment.test",
+      "name": "buyer_1795445878742_7unf",
+      "role": "customer",
+      "status": "active",
+      "createdAt": "2026-11-23T14:57:58.903Z",
+      "id": "student_buyer_1795445878742_7unf",
+      "updatedAt": "2026-11-23T14:57:58.905Z"
+    },
+    "stranger_user_1795445878742_7unf": {
+      "uid": "stranger_user_1795445878742_7unf",
+      "email": "stranger_1795445878742_7unf@assessment.test",
+      "name": "stranger_1795445878742_7unf",
+      "role": "customer",
+      "status": "active",
+      "createdAt": "2026-11-23T14:57:59.037Z",
+      "id": "stranger_user_1795445878742_7unf",
+      "updatedAt": "2026-11-23T14:57:59.040Z"
+    },
+    "failed_user_1795445878742_7unf": {
+      "uid": "failed_user_1795445878742_7unf",
+      "email": "failed_1795445878742_7unf@assessment.test",
+      "name": "failed_1795445878742_7unf",
+      "role": "customer",
+      "status": "active",
+      "createdAt": "2026-11-23T14:57:59.083Z",
+      "id": "failed_user_1795445878742_7unf",
+      "updatedAt": "2026-11-23T14:57:59.085Z"
+    },
+    "student_buyer_1795446733640_keor": {
+      "uid": "student_buyer_1795446733640_keor",
+      "email": "buyer_1795446733640_keor@assessment.test",
+      "name": "buyer_1795446733640_keor",
+      "role": "customer",
+      "status": "active",
+      "createdAt": "2026-11-23T15:12:13.798Z",
+      "id": "student_buyer_1795446733640_keor",
+      "updatedAt": "2026-11-23T15:12:13.800Z"
+    },
+    "stranger_user_1795446733640_keor": {
+      "uid": "stranger_user_1795446733640_keor",
+      "email": "stranger_1795446733640_keor@assessment.test",
+      "name": "stranger_1795446733640_keor",
+      "role": "customer",
+      "status": "active",
+      "createdAt": "2026-11-23T15:12:13.910Z",
+      "id": "stranger_user_1795446733640_keor",
+      "updatedAt": "2026-11-23T15:12:13.912Z"
+    },
+    "failed_user_1795446733640_keor": {
+      "uid": "failed_user_1795446733640_keor",
+      "email": "failed_1795446733640_keor@assessment.test",
+      "name": "failed_1795446733640_keor",
+      "role": "customer",
+      "status": "active",
+      "createdAt": "2026-11-23T15:12:13.945Z",
+      "id": "failed_user_1795446733640_keor",
+      "updatedAt": "2026-11-23T15:12:13.947Z"
     }
   },
   "products": {
@@ -4714,8 +4774,8 @@
       "sellerName": "DevCraft Studio",
       "sellerEmail": "creator_1795358931309@devcraft.test",
       "status": "approved",
-      "viewCount": 1,
-      "salesCount": 2,
+      "viewCount": 3,
+      "salesCount": 4,
       "rating": 4.8,
       "reviewCount": 1,
       "fileType": "ZIP Archive",
@@ -4725,7 +4785,7 @@
         "Templates"
       ],
       "createdAt": "2026-11-22T14:48:51.485Z",
-      "updatedAt": "2026-11-22T15:01:19.459Z",
+      "updatedAt": "2026-11-23T15:12:13.889Z",
       "id": "doc_1795358931488_cecyfo",
       "reviewedAt": "2026-11-22T14:48:51.740Z",
       "reviewedBy": "admin@eproducts.com"
@@ -5940,6 +6000,144 @@
       "createdAt": "2026-11-22T15:01:19.566Z",
       "id": "ord_failed_1795359678992_49n6",
       "updatedAt": "2026-11-22T15:01:19.569Z"
+    },
+    "doc_1795445878987_13048p": {
+      "orderId": "ORD-1795445878985-3CXTL",
+      "transactionId": "TXN-SIMULATED UPI-1795445878985",
+      "buyerId": "student_buyer_1795445878742_7unf",
+      "buyerEmail": "buyer_1795445878742_7unf@assessment.test",
+      "buyerName": "buyer_1795445878742_7unf",
+      "shippingAddress": {
+        "fullName": "buyer_1795445878742_7unf",
+        "phone": "+91 98765 43210",
+        "street": "42 Commercial Street",
+        "city": "Bangalore",
+        "state": "Karnataka",
+        "pincode": "560001",
+        "type": "Home"
+      },
+      "items": [
+        {
+          "productId": "doc_1795358931488_cecyfo",
+          "name": "Modern React 19 Production Kit 1795358931309",
+          "price": 35,
+          "originalPrice": 47,
+          "category": "Templates",
+          "brand": "DevCraft Studio",
+          "thumbnailUrl": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80",
+          "sellerId": "seller_1795358931309",
+          "sellerName": "DevCraft Studio",
+          "quantity": 1,
+          "selectedSize": null,
+          "selectedColor": null
+        }
+      ],
+      "subtotal": 35,
+      "discountAmount": 0,
+      "deliveryFee": 0,
+      "totalAmount": 35,
+      "coupon": null,
+      "paymentMethod": "Simulated UPI",
+      "paymentStatus": "completed",
+      "orderStatus": "Order Placed",
+      "trackingEvents": [
+        {
+          "status": "Order Placed",
+          "time": "2026-11-23T14:57:58.985Z",
+          "message": "Your order has been placed successfully."
+        }
+      ],
+      "isDemoTransaction": true,
+      "createdAt": "2026-11-23T14:57:58.985Z",
+      "id": "doc_1795445878987_13048p"
+    },
+    "ord_failed_1795445878742_7unf": {
+      "orderId": "ORD-FAILED-1795445878742_7unf",
+      "buyerId": "failed_user_1795445878742_7unf",
+      "buyerEmail": "failed_1795445878742_7unf@assessment.test",
+      "items": [
+        {
+          "productId": "doc_1795358930535_s3rpst",
+          "id": "doc_1795358930535_s3rpst",
+          "name": "Full Stack Cloud DevOps Blueprint 1795358930257_i6dh",
+          "price": 39
+        }
+      ],
+      "totalAmount": 39,
+      "paymentStatus": "failed",
+      "isDemoTransaction": true,
+      "createdAt": "2026-11-23T14:57:59.070Z",
+      "id": "ord_failed_1795445878742_7unf",
+      "updatedAt": "2026-11-23T14:57:59.072Z"
+    },
+    "doc_1795446733884_fb63vc": {
+      "orderId": "ORD-1795446733882-CKYKA",
+      "transactionId": "TXN-SIMULATED UPI-1795446733882",
+      "buyerId": "student_buyer_1795446733640_keor",
+      "buyerEmail": "buyer_1795446733640_keor@assessment.test",
+      "buyerName": "buyer_1795446733640_keor",
+      "shippingAddress": {
+        "fullName": "buyer_1795446733640_keor",
+        "phone": "+91 98765 43210",
+        "street": "42 Commercial Street",
+        "city": "Bangalore",
+        "state": "Karnataka",
+        "pincode": "560001",
+        "type": "Home"
+      },
+      "items": [
+        {
+          "productId": "doc_1795358931488_cecyfo",
+          "name": "Modern React 19 Production Kit 1795358931309",
+          "price": 35,
+          "originalPrice": 47,
+          "category": "Templates",
+          "brand": "DevCraft Studio",
+          "thumbnailUrl": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80",
+          "sellerId": "seller_1795358931309",
+          "sellerName": "DevCraft Studio",
+          "quantity": 1,
+          "selectedSize": null,
+          "selectedColor": null
+        }
+      ],
+      "subtotal": 35,
+      "discountAmount": 0,
+      "deliveryFee": 0,
+      "totalAmount": 35,
+      "coupon": null,
+      "paymentMethod": "Simulated UPI",
+      "paymentStatus": "completed",
+      "orderStatus": "Order Placed",
+      "trackingEvents": [
+        {
+          "status": "Order Placed",
+          "time": "2026-11-23T15:12:13.882Z",
+          "message": "Your order has been placed successfully."
+        }
+      ],
+      "isDemoTransaction": true,
+      "createdAt": "2026-11-23T15:12:13.882Z",
+      "id": "doc_1795446733884_fb63vc"
+    },
+    "ord_failed_1795446733640_keor": {
+      "orderId": "ORD-FAILED-1795446733640_keor",
+      "buyerId": "failed_user_1795446733640_keor",
+      "buyerEmail": "failed_1795446733640_keor@assessment.test",
+      "items": [
+        {
+          "productId": "doc_1795358930535_s3rpst",
+          "id": "doc_1795358930535_s3rpst",
+          "name": "Full Stack Cloud DevOps Blueprint 1795358930257_i6dh",
+          "price": 39
+        }
+      ],
+      "totalAmount": 39,
+      "paymentStatus": "failed",
+      "isDemoTransaction": true,
+      "createdAt": "2026-11-23T15:12:13.933Z",
+      "id": "ord_failed_1795446733640_keor",
+      "updatedAt": "2026-11-23T15:12:13.936Z"
     }
   },
   "carts": {
@@ -6150,6 +6348,18 @@
       "items": [],
       "updatedAt": "2026-11-22T15:01:19.470Z",
       "id": "student_buyer_1795359678992_49n6"
+    },
+    "student_buyer_1795445878742_7unf": {
+      "userId": "student_buyer_1795445878742_7unf",
+      "items": [],
+      "updatedAt": "2026-11-23T14:57:58.996Z",
+      "id": "student_buyer_1795445878742_7unf"
+    },
+    "student_buyer_1795446733640_keor": {
+      "userId": "student_buyer_1795446733640_keor",
+      "items": [],
+      "updatedAt": "2026-11-23T15:12:13.892Z",
+      "id": "student_buyer_1795446733640_keor"
     }
   },
   "productViews": {
@@ -6620,6 +6830,24 @@
       "userAgent": "node",
       "id": "doc_1795359679213_62bauu",
       "createdAt": "2026-11-22T15:01:19.213Z"
+    },
+    "doc_1795445878875_7lsfd8": {
+      "productId": "doc_1795358931488_cecyfo",
+      "productName": "Modern React 19 Production Kit 1795358931309",
+      "category": "Templates",
+      "viewedAt": "2026-11-23T14:57:58.872Z",
+      "userAgent": "node",
+      "id": "doc_1795445878875_7lsfd8",
+      "createdAt": "2026-11-23T14:57:58.875Z"
+    },
+    "doc_1795446733755_80civp": {
+      "productId": "doc_1795358931488_cecyfo",
+      "productName": "Modern React 19 Production Kit 1795358931309",
+      "category": "Templates",
+      "viewedAt": "2026-11-23T15:12:13.753Z",
+      "userAgent": "node",
+      "id": "doc_1795446733755_80civp",
+      "createdAt": "2026-11-23T15:12:13.755Z"
     }
   },
   "categories": {
