@@ -38,16 +38,30 @@ const UploadProductTab = ({ onComplete }) => {
   const [digitalFile, setDigitalFile] = useState(null);
 
   const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploadStage, setUploadStage] = useState('');
 
   const handleThumbnailChange = (e) => {
     if (e.target.files && e.target.files[0]) {
-      setThumbnailFile(e.target.files[0]);
+      const file = e.target.files[0];
+      if (file.size > 10 * 1024 * 1024) {
+        toast.error('Thumbnail image must be smaller than 10MB.');
+        return;
+      }
+      setThumbnailFile(file);
     }
   };
 
   const handleDigitalFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
-      setDigitalFile(e.target.files[0]);
+      const file = e.target.files[0];
+      if (file.size > 50 * 1024 * 1024) {
+        toast.error('Digital file must be smaller than 50MB.');
+        return;
+      }
+      setDigitalFile(file);
+      const computedMb = (file.size / (1024 * 1024)).toFixed(1);
+      setFileSize(`${computedMb} MB`);
     }
   };
 
@@ -63,6 +77,8 @@ const UploadProductTab = ({ onComplete }) => {
     setTags('');
     setThumbnailFile(null);
     setDigitalFile(null);
+    setUploadProgress(0);
+    setUploadStage('');
   };
 
   const fillSampleData = () => {
@@ -93,9 +109,20 @@ const UploadProductTab = ({ onComplete }) => {
     }
 
     setUploading(true);
+    setUploadProgress(0);
+    setUploadStage('Initiating upload...');
 
     try {
       let res;
+      const progressCallback = (percent) => {
+        setUploadProgress(percent);
+        if (percent < 100) {
+          setUploadStage(`Uploading digital assets (${percent}%)...`);
+        } else {
+          setUploadStage('Registering product on marketplace...');
+        }
+      };
+
       // If actual files selected from disk, use multipart FormData
       if (thumbnailFile || digitalFile) {
         const formData = new FormData();
@@ -120,7 +147,7 @@ const UploadProductTab = ({ onComplete }) => {
           formData.append('digitalFileUrl', digitalFileUrl.trim());
         }
 
-        res = await productService.create(formData);
+        res = await productService.create(formData, progressCallback);
       } else {
         // Otherwise send clean JSON payload
         const payload = {
@@ -135,7 +162,7 @@ const UploadProductTab = ({ onComplete }) => {
           digitalFileUrl: digitalFileUrl.trim() || 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
           tags
         };
-        res = await productService.create(payload);
+        res = await productService.create(payload, progressCallback);
       }
 
       if (res.data.success) {
@@ -370,15 +397,40 @@ const UploadProductTab = ({ onComplete }) => {
           />
         </div>
 
+        {/* Real-time Upload & Publishing Progress */}
+        {uploading && (
+          <div className="p-5 rounded-2xl bg-brand-50/80 dark:bg-brand-950/60 border border-brand-200 dark:border-brand-800/80 space-y-2.5 animate-in fade-in duration-300">
+            <div className="flex items-center justify-between text-xs font-bold text-brand-900 dark:text-brand-200">
+              <span className="flex items-center gap-2">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-600"></span>
+                </span>
+                {uploadStage || 'Publishing Digital Asset...'}
+              </span>
+              <span className="font-mono text-brand-700 dark:text-brand-300">{uploadProgress}%</span>
+            </div>
+            <div className="w-full h-2.5 rounded-full bg-brand-200/70 dark:bg-brand-900/80 overflow-hidden shadow-inner">
+              <div 
+                className="h-full bg-linear-to-r from-brand-600 to-indigo-600 transition-all duration-300 ease-out rounded-full"
+                style={{ width: `${Math.max(5, uploadProgress)}%` }}
+              />
+            </div>
+            <p className="text-[11px] text-slate-500 dark:text-slate-400">
+              Streaming deliverable packages and configuring marketplace metadata. Please keep this tab open.
+            </p>
+          </div>
+        )}
+
         {/* Submit */}
         <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-end gap-3">
           <button
             type="submit"
             disabled={uploading}
-            className="px-8 py-4 rounded-2xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm shadow-md shadow-brand-500/25 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-8 py-4 rounded-2xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm shadow-md shadow-brand-500/25 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >
-            <Upload className="w-4 h-4" />
-            {uploading ? 'Publishing Digital Asset...' : 'Publish Product to Marketplace'}
+            <Upload className={`w-4 h-4 ${uploading ? 'animate-bounce' : ''}`} />
+            {uploading ? (uploadStage || 'Publishing Digital Asset...') : 'Publish Product to Marketplace'}
           </button>
         </div>
 

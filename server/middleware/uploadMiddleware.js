@@ -20,15 +20,24 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-  // Allow common digital product and thumbnail formats
-  const allowedExtensions = /jpeg|jpg|png|webp|svg|pdf|zip|rar|tar|gz|txt|docx|epub|mp4/;
   const ext = path.extname(file.originalname).toLowerCase().replace('.', '');
   
-  if (allowedExtensions.test(ext)) {
-    cb(null, true);
-  } else {
-    cb(new Error(`File type .${ext} is not supported.`), false);
+  // Security: block dangerous executable files
+  const blockedExecutables = /^(exe|bat|cmd|sh|msi|vbs|scr|pif|com)$/i;
+  if (blockedExecutables.test(ext)) {
+    return cb(new Error(`Executable files (.${ext}) are not permitted for security reasons.`), false);
   }
+
+  // Thumbnails must be standard web image formats
+  if (file.fieldname === 'thumbnail') {
+    const allowedImages = /^(jpeg|jpg|png|webp|svg|gif|avif)$/i;
+    if (ext && !allowedImages.test(ext)) {
+      return cb(new Error(`Thumbnail must be an image (.jpg, .png, .webp, .svg, .gif).`), false);
+    }
+  }
+
+  // All valid digital deliverables allowed up to 50MB
+  cb(null, true);
 };
 
 const upload = multer({
