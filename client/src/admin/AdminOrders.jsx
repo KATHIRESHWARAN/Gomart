@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { adminService } from '../services/api';
 import LoadingSpinner from '../components/LoadingSpinner';
 import BackButton from '../components/BackButton';
+import InvoiceModal from '../components/InvoiceModal';
 import { 
   Receipt, 
   Calendar, 
@@ -14,7 +15,8 @@ import {
   CheckCircle2,
   Clock,
   XCircle,
-  Package
+  Package,
+  FileText
 } from 'lucide-react';
 import { toast } from 'react-toastify';
 
@@ -32,6 +34,7 @@ const AdminOrders = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
+  const [selectedInvoiceOrder, setSelectedInvoiceOrder] = useState(null);
   const [updatingId, setUpdatingId] = useState(null);
 
   useEffect(() => {
@@ -138,6 +141,7 @@ const AdminOrders = () => {
               <th className="py-3.5 px-4 font-bold">Payment</th>
               <th className="py-3.5 px-4 font-bold">Fulfillment Status</th>
               <th className="py-3.5 px-4 font-bold">Date</th>
+              <th className="py-3.5 px-4 font-bold text-right">Invoice</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-800/60">
@@ -214,12 +218,31 @@ const AdminOrders = () => {
                     {new Date(ord.createdAt).toLocaleDateString()}
                   </td>
 
+                  {/* Invoice Action */}
+                  <td className="py-3.5 px-4 align-top text-right">
+                    <button
+                      onClick={() => setSelectedInvoiceOrder(ord)}
+                      className="px-2.5 py-1 rounded-xl bg-purple-950/60 hover:bg-purple-900 border border-purple-800 text-purple-300 text-[11px] font-bold transition-all inline-flex items-center gap-1 cursor-pointer"
+                      title="View & Print Official Invoice"
+                    >
+                      <FileText className="w-3.5 h-3.5" />
+                      <span>Invoice</span>
+                    </button>
+                  </td>
+
                 </tr>
               );
             })}
           </tbody>
         </table>
       </div>
+
+      {/* Official Tax Invoice Modal */}
+      <InvoiceModal
+        order={selectedInvoiceOrder}
+        isOpen={Boolean(selectedInvoiceOrder)}
+        onClose={() => setSelectedInvoiceOrder(null)}
+      />
 
     </div>
   );

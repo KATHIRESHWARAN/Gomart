@@ -3,6 +3,7 @@ import { orderService } from '../services/api';
 import LoadingSpinner from '../components/LoadingSpinner';
 import EmptyState from '../components/EmptyState';
 import OrdersAnalyticsModal from '../components/OrdersAnalyticsModal';
+import InvoiceModal from '../components/InvoiceModal';
 import BackButton from '../components/BackButton';
 import { 
   Receipt, 
@@ -16,7 +17,8 @@ import {
   CheckCircle2, 
   Clock, 
   XCircle,
-  AlertCircle
+  AlertCircle,
+  FileText
 } from 'lucide-react';
 import { toast } from 'react-toastify';
 
@@ -31,6 +33,7 @@ const OrdersTab = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAnalyticsModal, setShowAnalyticsModal] = useState(false);
+  const [selectedInvoiceOrder, setSelectedInvoiceOrder] = useState(null);
   const [cancellingId, setCancellingId] = useState(null);
 
   useEffect(() => {
@@ -168,13 +171,22 @@ const OrdersTab = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3">
                   <div className="text-right">
                     <span className="text-[11px] text-slate-400 font-medium block">Total Payable</span>
                     <span className="text-xl font-black text-navy-900 dark:text-white font-mono">
                       ${Number(ord.totalAmount).toFixed(2)}
                     </span>
                   </div>
+
+                  {/* View Invoice Button */}
+                  <button
+                    onClick={() => setSelectedInvoiceOrder(ord)}
+                    className="px-3 py-1.5 rounded-xl border border-cyan-600/30 bg-cyan-50/50 dark:bg-cyan-950/30 hover:bg-cyan-100/60 dark:hover:bg-cyan-900/40 text-cyan-700 dark:text-cyan-300 text-xs font-bold transition-all flex items-center gap-1.5 shadow-xs cursor-pointer"
+                  >
+                    <FileText className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
+                    <span>Invoice</span>
+                  </button>
 
                   {canCancel && (
                     <button
@@ -289,6 +301,13 @@ const OrdersTab = () => {
         orders={orders}
         isOpen={showAnalyticsModal}
         onClose={() => setShowAnalyticsModal(false)}
+      />
+
+      {/* Official Tax Invoice Modal */}
+      <InvoiceModal
+        order={selectedInvoiceOrder}
+        isOpen={Boolean(selectedInvoiceOrder)}
+        onClose={() => setSelectedInvoiceOrder(null)}
       />
 
     </div>

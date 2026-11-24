@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, Link, Navigate } from 'react-router-dom';
 import confetti from 'canvas-confetti';
 import { 
@@ -12,16 +12,19 @@ import {
   Calendar,
   Package,
   CreditCard,
-  Printer
+  Printer,
+  FileText
 } from 'lucide-react';
 import { downloadService } from '../services/api';
 import BackButton from '../components/BackButton';
+import InvoiceModal from '../components/InvoiceModal';
 import { toast } from 'react-toastify';
 
 const OrderSuccess = () => {
   const location = useLocation();
   const order = location.state?.order;
   const estimatedDelivery = location.state?.estimatedDelivery || 'In 3-4 Business Days';
+  const [showInvoiceModal, setShowInvoiceModal] = useState(false);
 
   // Trigger celebration confetti upon mount
   useEffect(() => {
@@ -56,7 +59,7 @@ const OrderSuccess = () => {
   };
 
   const handlePrint = () => {
-    window.print();
+    setShowInvoiceModal(true);
   };
 
   return (
@@ -215,9 +218,9 @@ const OrderSuccess = () => {
           </Link>
           <button
             onClick={handlePrint}
-            className="w-full sm:w-auto px-5 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs transition-colors flex items-center justify-center gap-2"
+            className="w-full sm:w-auto px-5 py-3 rounded-2xl border border-cyan-600/30 bg-cyan-50/50 dark:bg-cyan-950/30 hover:bg-cyan-100/60 dark:hover:bg-cyan-900/40 text-cyan-700 dark:text-cyan-300 font-bold text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-xs"
           >
-            <Printer className="w-4 h-4" /> Print Invoice
+            <Printer className="w-4 h-4 text-cyan-600 dark:text-cyan-400" /> View / Print Invoice
           </button>
           <Link
             to="/products"
@@ -228,6 +231,13 @@ const OrderSuccess = () => {
         </div>
 
       </div>
+
+      {/* Official Tax Invoice Modal */}
+      <InvoiceModal
+        order={order}
+        isOpen={showInvoiceModal}
+        onClose={() => setShowInvoiceModal(false)}
+      />
 
     </div>
   );
