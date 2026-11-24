@@ -59,6 +59,20 @@ const OrderSuccess = () => {
       {/* Print Stylesheet injection */}
       <style dangerouslySetInnerHTML={{ __html: `
         @media print {
+          @page {
+            size: A4 portrait;
+            margin: 8mm 10mm;
+          }
+          html, body {
+            margin: 0 !important;
+            padding: 0 !important;
+            background: white !important;
+            color: #0f172a !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            width: 100% !important;
+            height: auto !important;
+          }
           body * {
             visibility: hidden !important;
           }
@@ -66,16 +80,19 @@ const OrderSuccess = () => {
             visibility: visible !important;
           }
           #printable-invoice {
-            position: fixed !important;
+            position: absolute !important;
             left: 0 !important;
             top: 0 !important;
             width: 100% !important;
+            max-width: 100% !important;
             margin: 0 !important;
-            padding: 12mm 15mm !important;
-            box-shadow: none !important;
+            padding: 0 !important;
             border: none !important;
+            box-shadow: none !important;
             background: white !important;
-            color: #0f172a !important;
+            page-break-after: avoid !important;
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
           }
           .no-print {
             display: none !important;
