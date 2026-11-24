@@ -21,6 +21,7 @@ import Wishlist from './pages/Wishlist';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import OrderSuccess from './pages/OrderSuccess';
+import InvoicePage from './pages/InvoicePage';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import AdminLogin from './pages/AdminLogin';
@@ -112,6 +113,22 @@ const AppContent = () => {
             element={
               <ProtectedRoute>
                 <OrderSuccess />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/invoice/:id" 
+            element={
+              <ProtectedRoute>
+                <InvoicePage />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/orders/:id/invoice" 
+            element={
+              <ProtectedRoute>
+                <InvoicePage />
               </ProtectedRoute>
             } 
           />
