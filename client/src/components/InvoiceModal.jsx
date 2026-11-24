@@ -12,24 +12,23 @@ const InvoiceModal = ({ order, isOpen, onClose, onDownload }) => {
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 overflow-y-auto">
+      <div className="fixed inset-0 z-50 flex items-start justify-center p-3 sm:p-6 overflow-y-auto">
         
-        {/* Print Stylesheet injection for single A4 page with exact colors */}
+        {/* Single-Page A4 Print Stylesheet with Exact Color Reproduction */}
         <style dangerouslySetInnerHTML={{ __html: `
           @media print {
             @page {
               size: A4 portrait;
-              margin: 8mm 10mm;
+              margin: 10mm 12mm;
             }
             html, body {
               margin: 0 !important;
               padding: 0 !important;
-              background: white !important;
+              background: #ffffff !important;
               color: #0f172a !important;
               -webkit-print-color-adjust: exact !important;
               print-color-adjust: exact !important;
               width: 100% !important;
-              height: auto !important;
             }
             body * {
               visibility: hidden !important;
@@ -47,7 +46,7 @@ const InvoiceModal = ({ order, isOpen, onClose, onDownload }) => {
               padding: 0 !important;
               border: none !important;
               box-shadow: none !important;
-              background: white !important;
+              background: #ffffff !important;
               page-break-after: avoid !important;
               page-break-inside: avoid !important;
               break-inside: avoid !important;
@@ -67,30 +66,30 @@ const InvoiceModal = ({ order, isOpen, onClose, onDownload }) => {
           className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm no-print"
         />
 
-        {/* Modal Window Wrapper */}
+        {/* Modal Window Wrapper (Cleanly centered, never clipped at top) */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 15 }}
+          initial={{ opacity: 0, scale: 0.96, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: 15 }}
-          className="relative w-full max-w-4xl max-h-[92vh] overflow-y-auto z-10 my-auto rounded-3xl bg-slate-900 border border-slate-800 shadow-2xl p-3 sm:p-6 space-y-4"
+          exit={{ opacity: 0, scale: 0.96, y: 10 }}
+          className="relative w-full max-w-4xl z-10 my-4 sm:my-8 rounded-3xl bg-slate-900 border border-slate-700 shadow-2xl p-4 sm:p-6 space-y-4"
         >
 
           {/* Top Control Bar (Screen only) */}
           <div className="no-print flex items-center justify-between pb-3 border-b border-slate-800 text-slate-200">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center font-bold">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center font-bold">
                 <FileText className="w-4 h-4" />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-white">Official Tax Invoice</h3>
-                <p className="text-[11px] text-slate-400 font-mono">Reference: {order.orderId}</p>
+                <h3 className="text-sm font-bold text-white leading-none">Official Tax Invoice</h3>
+                <p className="text-[11px] text-slate-400 font-mono mt-1">Ref: {order.orderId}</p>
               </div>
             </div>
 
             <div className="flex items-center gap-2">
               <button
                 onClick={handlePrint}
-                className="px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-700 text-white font-bold text-xs shadow-md shadow-cyan-600/20 transition-all flex items-center gap-1.5 cursor-pointer"
+                className="px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-700 text-white font-bold text-xs shadow-md shadow-cyan-600/25 transition-all flex items-center gap-1.5 cursor-pointer"
               >
                 <Printer className="w-4 h-4" />
                 <span>Print / Save PDF</span>
@@ -107,7 +106,9 @@ const InvoiceModal = ({ order, isOpen, onClose, onDownload }) => {
           </div>
 
           {/* Printable Invoice Sheet */}
-          <InvoiceDocument order={order} onDownload={onDownload} id="printable-invoice" />
+          <div className="w-full flex justify-center bg-slate-950/40 p-2 sm:p-4 rounded-2xl">
+            <InvoiceDocument order={order} onDownload={onDownload} id="printable-invoice" />
+          </div>
 
         </motion.div>
 

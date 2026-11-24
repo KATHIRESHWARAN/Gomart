@@ -1,12 +1,21 @@
 import React from 'react';
 import { DownloadCloud } from 'lucide-react';
 
+const cleanProductName = (rawName) => {
+  if (!rawName) return 'Digital Product Package';
+  return rawName
+    .replace(/_[a-z0-9]{4,16}$/i, '')
+    .replace(/179\d{10,}/g, '')
+    .replace(/[-_]+/g, ' ')
+    .trim();
+};
+
 const InvoiceDocument = ({ order, onDownload, id = 'printable-invoice' }) => {
   if (!order) return null;
 
   const invoiceNumber = order.orderId 
-    ? order.orderId.replace(/[^a-zA-Z0-9]/g, ' ').trim()
-    : (order.id ? order.id.slice(0, 10).toUpperCase() : '023465875');
+    ? order.orderId
+    : (order.id ? `ORD-${order.id.slice(0, 10).toUpperCase()}` : 'ORD-2026-023465');
 
   const formattedDate = order.createdAt 
     ? new Date(order.createdAt).toLocaleDateString('en-US', {
@@ -43,33 +52,54 @@ const InvoiceDocument = ({ order, onDownload, id = 'printable-invoice' }) => {
     <div
       id={id}
       style={{
+        backgroundColor: '#ffffff',
+        color: '#0f172a',
         WebkitPrintColorAdjust: 'exact',
         printColorAdjust: 'exact',
         pageBreakInside: 'avoid',
-        breakInside: 'avoid'
+        breakInside: 'avoid',
+        boxSizing: 'border-box'
       }}
-      className="w-full bg-white text-slate-900 rounded-2xl p-6 sm:p-10 shadow-xl border border-slate-200/90 space-y-5 select-text"
+      className="w-full max-w-3xl mx-auto bg-white rounded-2xl p-6 sm:p-10 shadow-xl border border-slate-300 text-slate-900 select-text"
     >
-      {/* 1. Header: INVOICE title on Left, Brand on Right */}
-      <div className="flex items-start justify-between gap-4 pb-4 border-b border-slate-200">
+      {/* 1. Top Header: INVOICE title on Left, Brand on Right */}
+      <div className="flex items-start justify-between gap-4 pb-4 border-b-2 border-slate-200">
         <div>
-          <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight leading-none">INVOICE</h1>
-          <p className="text-[11px] font-bold tracking-widest text-slate-500 mt-1.5 font-mono uppercase">
-            NO : # {invoiceNumber}
+          <h1 
+            style={{ color: '#0f172a', margin: 0, lineHeight: 1 }}
+            className="text-3xl sm:text-4xl font-black tracking-tight"
+          >
+            INVOICE
+          </h1>
+          <p 
+            style={{ color: '#64748b', marginTop: '6px' }}
+            className="text-xs font-bold tracking-wider font-mono uppercase"
+          >
+            NO : #{invoiceNumber}
           </p>
         </div>
 
         {/* Brand Logo & Name */}
         <div className="flex items-center gap-3 text-right">
           <div>
-            <h2 className="text-lg font-black text-slate-900 tracking-tight flex items-center justify-end gap-1">
-              GoMart <span className="text-cyan-600 font-extrabold">DIGITAL</span>
+            <h2 
+              style={{ color: '#0f172a', margin: 0 }}
+              className="text-lg sm:text-xl font-black tracking-tight flex items-center justify-end gap-1"
+            >
+              GoMart <span style={{ color: '#0891b2' }} className="font-extrabold">DIGITAL</span>
             </h2>
-            <p className="text-[10px] font-medium text-slate-500 mt-0.5">She Software Solutions Inc.</p>
+            <p style={{ color: '#64748b', margin: '2px 0 0 0' }} className="text-[10px] font-semibold">
+              She Software Solutions Inc.
+            </p>
           </div>
           <div 
-            style={{ backgroundColor: '#0891b2', WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' }}
-            className="w-9 h-9 rounded-xl text-white flex items-center justify-center shadow-sm shrink-0"
+            style={{ 
+              backgroundColor: '#0891b2', 
+              color: '#ffffff',
+              WebkitPrintColorAdjust: 'exact', 
+              printColorAdjust: 'exact' 
+            }}
+            className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm shrink-0"
           >
             <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
@@ -80,93 +110,165 @@ const InvoiceDocument = ({ order, onDownload, id = 'printable-invoice' }) => {
         </div>
       </div>
 
-      {/* 2. Metadata Columns (Always 3 columns, never stacked) */}
-      <div className="grid grid-cols-12 gap-4 items-start py-1 text-xs">
+      {/* 2. Structured 3-Box Metadata Grid (Guaranteed alignment with clean borders) */}
+      <div className="grid grid-cols-12 gap-3 sm:gap-4 items-stretch my-4">
         
-        {/* Column 1: Invoice To */}
-        <div className="col-span-5 space-y-1">
-          <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block mb-0.5">
-            Invoice To
+        {/* Box 1: Invoice To */}
+        <div 
+          style={{ backgroundColor: '#f8fafc', borderColor: '#e2e8f0' }}
+          className="col-span-5 border rounded-xl p-3 sm:p-4 space-y-1"
+        >
+          <span 
+            style={{ color: '#0891b2' }}
+            className="text-[10px] font-extrabold uppercase tracking-wider block"
+          >
+            INVOICE TO
           </span>
-          <h3 className="text-xs sm:text-sm font-extrabold text-cyan-700">{buyerName}</h3>
-          <p className="text-slate-600 text-[11px] font-medium leading-relaxed">
-            Account: <span className="font-mono text-slate-900 font-semibold">{buyerEmail}</span><br />
-            License: <span className="text-slate-800">{licenseType}</span><br />
+          <h3 
+            style={{ color: '#0f172a' }}
+            className="text-xs sm:text-sm font-extrabold"
+          >
+            {buyerName}
+          </h3>
+          <p 
+            style={{ color: '#475569' }}
+            className="text-[11px] leading-relaxed font-medium"
+          >
+            Account: <strong style={{ color: '#0f172a' }} className="font-mono">{buyerEmail}</strong><br />
+            License: <span style={{ color: '#334155' }}>{licenseType}</span><br />
             {order.shippingAddress?.phone && (
               <span>Contact: {order.shippingAddress.phone}</span>
             )}
           </p>
         </div>
 
-        {/* Column 2: Order & Transaction */}
-        <div className="col-span-4 space-y-1">
-          <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block mb-0.5">
-            Order & Transaction
+        {/* Box 2: Order & Transaction Details */}
+        <div 
+          style={{ backgroundColor: '#f8fafc', borderColor: '#e2e8f0' }}
+          className="col-span-4 border rounded-xl p-3 sm:p-4 space-y-1"
+        >
+          <span 
+            style={{ color: '#0891b2' }}
+            className="text-[10px] font-extrabold uppercase tracking-wider block"
+          >
+            ORDER DETAILS
           </span>
-          <div className="space-y-0.5 text-slate-600 text-[11px] font-medium">
-            <p><strong className="text-slate-800">Order ID:</strong> <span className="font-mono text-[10px]">{order.orderId}</span></p>
-            <p><strong className="text-slate-800">Date:</strong> {formattedDate}</p>
-            <p><strong className="text-slate-800">Payment:</strong> {order.paymentMethod || 'card'}</p>
-            <p><strong className="text-slate-800">TXN Ref:</strong> <span className="font-mono text-[10px]">{transactionId}</span></p>
+          <div 
+            style={{ color: '#475569' }}
+            className="text-[11px] leading-snug space-y-0.5 font-medium"
+          >
+            <p><strong style={{ color: '#1e293b' }}>Order ID:</strong> <span className="font-mono text-[10px]">{order.orderId}</span></p>
+            <p><strong style={{ color: '#1e293b' }}>Date:</strong> {formattedDate}</p>
+            <p><strong style={{ color: '#1e293b' }}>Payment:</strong> {order.paymentMethod || 'card'}</p>
+            <p><strong style={{ color: '#1e293b' }}>TXN Ref:</strong> <span className="font-mono text-[10px]">{transactionId}</span></p>
           </div>
         </div>
 
-        {/* Column 3: Total Due Prominent Callout */}
-        <div className="col-span-3 text-right space-y-1">
-          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
-            Total Due:
+        {/* Box 3: Total Due Banner */}
+        <div 
+          style={{ backgroundColor: '#f8fafc', borderColor: '#e2e8f0' }}
+          className="col-span-3 border rounded-xl p-3 sm:p-4 flex flex-col justify-between text-right"
+        >
+          <span 
+            style={{ color: '#64748b' }}
+            className="text-[10px] font-bold uppercase tracking-wider block"
+          >
+            TOTAL DUE
           </span>
-          <div className="text-xl sm:text-2xl font-black text-slate-900 font-mono tracking-tight">
+          <div 
+            style={{ color: '#0f172a' }}
+            className="text-xl sm:text-2xl font-black font-mono tracking-tight"
+          >
             USD: ${grandTotal}
           </div>
-          <span 
-            style={{ 
-              backgroundColor: '#ecfdf5', 
-              color: '#059669', 
-              borderColor: '#a7f3d0',
-              WebkitPrintColorAdjust: 'exact', 
-              printColorAdjust: 'exact' 
-            }}
-            className="inline-block mt-0.5 px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider border"
-          >
-            ● {order.paymentStatus === 'completed' || !order.paymentStatus ? 'Paid in Full' : order.paymentStatus.toUpperCase()}
-          </span>
+          <div>
+            <span 
+              style={{ 
+                backgroundColor: '#ecfdf5', 
+                color: '#059669', 
+                borderColor: '#a7f3d0',
+                WebkitPrintColorAdjust: 'exact', 
+                printColorAdjust: 'exact' 
+              }}
+              className="inline-block px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider border"
+            >
+              ● {order.paymentStatus === 'completed' || !order.paymentStatus ? 'PAID IN FULL' : order.paymentStatus.toUpperCase()}
+            </span>
+          </div>
         </div>
 
       </div>
 
-      {/* 3. Line Items Table */}
-      <div className="overflow-x-auto">
+      {/* 3. Structured Line Items Table (Fully bordered and aligned) */}
+      <div 
+        style={{ borderColor: '#cbd5e1' }}
+        className="border rounded-xl overflow-hidden my-4"
+      >
         <table className="w-full text-left border-collapse text-xs">
           <thead>
-            <tr className="border-y-2 border-slate-900 text-slate-900 font-bold uppercase text-[10px]">
-              <th className="py-2 px-2 w-8 text-center">No.</th>
-              <th className="py-2 px-3">Item Description</th>
-              <th className="py-2 px-3 text-right w-24">Unit Price</th>
-              <th className="py-2 px-3 text-center w-12">Qty</th>
-              <th className="py-2 px-3 text-right w-24">Total</th>
-              {onDownload && <th className="py-2 px-2 text-center no-print w-20">Download</th>}
+            <tr 
+              style={{ backgroundColor: '#0f172a', color: '#ffffff' }}
+              className="font-bold uppercase text-[10px]"
+            >
+              <th style={{ borderColor: '#334155' }} className="py-2.5 px-3 w-10 text-center border-r">No.</th>
+              <th style={{ borderColor: '#334155' }} className="py-2.5 px-3 border-r">Item Description</th>
+              <th style={{ borderColor: '#334155' }} className="py-2.5 px-3 text-right w-24 border-r">Unit Price</th>
+              <th style={{ borderColor: '#334155' }} className="py-2.5 px-3 text-center w-14 border-r">Qty</th>
+              <th className="py-2.5 px-3 text-right w-24">Total</th>
+              {onDownload && <th className="py-2.5 px-2 text-center no-print w-20">Deliverable</th>}
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-200 text-slate-800 text-[11px]">
+          <tbody className="text-[11px]">
             {items.map((item, idx) => {
               const itemTotal = (Number(item.price || 0) * Number(item.quantity || 1)).toFixed(2);
               const numPadded = (idx + 1).toString().padStart(2, '0');
-              const itemName = item.name || item.title || 'Digital Deliverable';
+              const itemName = cleanProductName(item.name || item.title);
+              const isEven = idx % 2 === 0;
+
               return (
-                <tr key={idx}>
-                  <td className="py-2.5 px-2 text-center font-mono font-medium text-slate-400">{numPadded}</td>
-                  <td className="py-2.5 px-3">
-                    <p className="font-bold text-slate-900 text-xs">{itemName}</p>
-                    <p className="text-[10px] text-slate-500 mt-0.5">
+                <tr 
+                  key={idx}
+                  style={{ 
+                    backgroundColor: isEven ? '#ffffff' : '#f8fafc',
+                    borderColor: '#e2e8f0' 
+                  }}
+                  className="border-b"
+                >
+                  <td 
+                    style={{ borderColor: '#e2e8f0', color: '#64748b' }}
+                    className="py-3 px-3 text-center font-mono font-medium border-r"
+                  >
+                    {numPadded}
+                  </td>
+                  <td 
+                    style={{ borderColor: '#e2e8f0' }}
+                    className="py-3 px-3 border-r"
+                  >
+                    <p style={{ color: '#0f172a' }} className="font-extrabold text-xs">{itemName}</p>
+                    <p style={{ color: '#64748b' }} className="text-[10px] mt-0.5">
                       {item.category ? `Category: ${item.category} • ` : ''}Instant Digital Download • Perpetual Commercial License
                     </p>
                   </td>
-                  <td className="py-2.5 px-3 text-right font-mono font-semibold text-slate-800">${Number(item.price || 0).toFixed(2)}</td>
-                  <td className="py-2.5 px-3 text-center font-mono font-semibold text-slate-800">{item.quantity || 1}</td>
-                  <td className="py-2.5 px-3 text-right font-mono font-bold text-slate-900">${itemTotal}</td>
+                  <td 
+                    style={{ borderColor: '#e2e8f0', color: '#0f172a' }}
+                    className="py-3 px-3 text-right font-mono font-bold border-r"
+                  >
+                    ${Number(item.price || 0).toFixed(2)}
+                  </td>
+                  <td 
+                    style={{ borderColor: '#e2e8f0', color: '#0f172a' }}
+                    className="py-3 px-3 text-center font-mono font-bold border-r"
+                  >
+                    {item.quantity || 1}
+                  </td>
+                  <td 
+                    style={{ color: '#0f172a' }}
+                    className="py-3 px-3 text-right font-mono font-black"
+                  >
+                    ${itemTotal}
+                  </td>
                   {onDownload && (
-                    <td className="py-2.5 px-2 text-center no-print">
+                    <td className="py-3 px-2 text-center no-print">
                       {item.downloadUrl ? (
                         <button
                           onClick={() => onDownload(item.productId, itemName)}
@@ -176,7 +278,7 @@ const InvoiceDocument = ({ order, onDownload, id = 'printable-invoice' }) => {
                           <span>Get</span>
                         </button>
                       ) : (
-                        <span className="text-[9px] text-slate-400 font-medium">Unlocked</span>
+                        <span style={{ color: '#64748b' }} className="text-[9px] font-medium">Ready</span>
                       )}
                     </td>
                   )}
@@ -187,29 +289,40 @@ const InvoiceDocument = ({ order, onDownload, id = 'printable-invoice' }) => {
         </table>
       </div>
 
-      {/* 4. Lower Section: Payment/Terms on Left, Highlighted Cyan Box on Right (Side by side always) */}
-      <div className="grid grid-cols-12 gap-4 items-start pt-1">
+      {/* 4. Lower Section: Payment/Terms on Left, Solid Cyan Totals Box on Right */}
+      <div className="grid grid-cols-12 gap-4 items-start my-4">
         
-        {/* Left: Payment Method & Terms */}
-        <div className="col-span-7 space-y-3 text-[11px]">
+        {/* Left Column: Payment & Terms */}
+        <div 
+          style={{ backgroundColor: '#f8fafc', borderColor: '#e2e8f0' }}
+          className="col-span-7 border rounded-xl p-3 sm:p-4 space-y-2.5 text-[11px]"
+        >
           <div>
-            <h4 className="font-bold text-slate-900 uppercase tracking-wider text-[10px]">Payment Method:</h4>
-            <p className="text-slate-600 mt-0.5 leading-snug">
-              Processed via <strong className="text-slate-800">{order.paymentMethod || 'card'}</strong><br />
-              Status: <strong className="text-emerald-600">Authorized & Verified</strong> (256-Bit SSL Encryption)
+            <h4 
+              style={{ color: '#0f172a' }}
+              className="font-bold uppercase tracking-wider text-[10px] mb-0.5"
+            >
+              PAYMENT METHOD
+            </h4>
+            <p style={{ color: '#475569' }} className="leading-snug">
+              Processed via <strong style={{ color: '#0f172a' }}>{order.paymentMethod || 'card'}</strong> (256-Bit SSL Encryption) • <strong style={{ color: '#059669' }}>Authorized & Verified</strong>
             </p>
           </div>
 
-          <div>
-            <h4 className="font-bold text-slate-900 uppercase tracking-wider text-[10px]">Terms & Conditions:</h4>
-            <p className="text-slate-500 text-[10px] leading-relaxed mt-0.5">
-              All items are digital deliverables with perpetual, non-exclusive commercial licenses. 
-              Download access and version updates are permanently accessible from your user dashboard.
+          <div style={{ borderTop: '1px solid #e2e8f0', paddingTop: '8px' }}>
+            <h4 
+              style={{ color: '#0f172a' }}
+              className="font-bold uppercase tracking-wider text-[10px] mb-0.5"
+            >
+              TERMS & CONDITIONS
+            </h4>
+            <p style={{ color: '#64748b' }} className="text-[10px] leading-relaxed">
+              All items are digital deliverables with perpetual, non-exclusive commercial licenses. Download access and version updates are permanently accessible from your user dashboard.
             </p>
           </div>
         </div>
 
-        {/* Right: Signature Solid Cyan Totals Box (Fixed width in row, guaranteed print colors) */}
+        {/* Right Column: Signature Solid Cyan Totals Box */}
         <div className="col-span-5">
           <div 
             style={{ 
@@ -218,28 +331,35 @@ const InvoiceDocument = ({ order, onDownload, id = 'printable-invoice' }) => {
               WebkitPrintColorAdjust: 'exact', 
               printColorAdjust: 'exact' 
             }}
-            className="bg-cyan-600 text-white rounded-xl p-3.5 shadow-md space-y-1.5 text-xs font-medium"
+            className="rounded-xl p-4 shadow-md space-y-1.5 text-xs font-medium"
           >
             <div className="flex items-center justify-between text-[11px]">
-              <span className="text-cyan-100">Sub-Total:</span>
-              <span className="font-mono font-bold text-white">${subtotal.toFixed(2)}</span>
+              <span style={{ color: '#cffafe' }}>Sub-Total:</span>
+              <strong style={{ color: '#ffffff' }} className="font-mono">${subtotal.toFixed(2)}</strong>
             </div>
 
             <div className="flex items-center justify-between text-[11px]">
-              <span className="text-cyan-100">Digital Tax (0%):</span>
-              <span className="font-mono font-bold text-white">$0.00</span>
+              <span style={{ color: '#cffafe' }}>Digital Tax (0%):</span>
+              <strong style={{ color: '#ffffff' }} className="font-mono">$0.00</strong>
             </div>
 
             {discount > 0 && (
               <div className="flex items-center justify-between text-[11px]">
-                <span className="text-cyan-100">Coupon Discount:</span>
-                <span className="font-mono font-bold text-cyan-200">-${discount.toFixed(2)}</span>
+                <span style={{ color: '#cffafe' }}>Coupon Discount:</span>
+                <strong style={{ color: '#a5f3fc' }} className="font-mono">-${discount.toFixed(2)}</strong>
               </div>
             )}
 
-            <div className="border-t border-cyan-400/60 pt-1.5 mt-1 flex items-center justify-between">
-              <span className="font-extrabold uppercase tracking-wide text-white text-xs">Grand Total:</span>
-              <span className="font-mono font-black text-base text-white">${grandTotal}</span>
+            <div 
+              style={{ borderTop: '1px solid rgba(255, 255, 255, 0.4)' }}
+              className="pt-2 mt-1 flex items-center justify-between"
+            >
+              <span style={{ color: '#ffffff' }} className="font-black uppercase tracking-wide text-xs">
+                GRAND TOTAL:
+              </span>
+              <strong style={{ color: '#ffffff' }} className="font-mono font-black text-lg">
+                ${grandTotal}
+              </strong>
             </div>
           </div>
         </div>
@@ -247,39 +367,51 @@ const InvoiceDocument = ({ order, onDownload, id = 'printable-invoice' }) => {
       </div>
 
       {/* 5. Signature Section */}
-      <div className="pt-2 flex justify-end">
-        <div className="text-center w-48 space-y-0.5">
+      <div className="flex justify-end my-3">
+        <div className="text-center w-48 space-y-1">
           <div className="h-8 flex items-center justify-center">
             <span 
               style={{ 
                 fontFamily: "'Brush Script MT', 'Lucida Handwriting', cursive",
-                fontSize: '24px',
-                color: '#0e7490'
+                fontSize: '26px',
+                color: '#0e7490',
+                fontWeight: 'bold'
               }} 
-              className="font-bold select-none"
+              className="select-none"
             >
               Micheal Johns
             </span>
           </div>
-          <div className="border-t border-slate-900 pt-1">
-            <h5 className="text-[11px] font-bold text-slate-900 leading-tight">Micheal Johns</h5>
-            <p className="text-[9px] text-slate-500 font-medium leading-none">Director of Licensing & Operations</p>
+          <div style={{ borderTop: '1px solid #334155' }} className="pt-1">
+            <h5 style={{ color: '#0f172a' }} className="text-[11px] font-extrabold leading-tight">Micheal Johns</h5>
+            <p style={{ color: '#64748b' }} className="text-[9px] font-semibold leading-none">Director of Licensing & Operations</p>
           </div>
         </div>
       </div>
 
       {/* 6. Footer: Company Information */}
-      <div className="pt-4 border-t border-slate-200 space-y-1 text-[10px] text-slate-500">
-        <h5 className="font-bold text-cyan-700 uppercase tracking-wider text-[9px]">Company Information</h5>
-        <div className="grid grid-cols-3 gap-2">
+      <div 
+        style={{ borderTop: '1px solid #e2e8f0' }}
+        className="pt-3 space-y-1 text-[10px]"
+      >
+        <span 
+          style={{ color: '#0891b2' }}
+          className="font-extrabold uppercase tracking-wider text-[9px] block mb-1"
+        >
+          COMPANY INFORMATION
+        </span>
+        <div 
+          style={{ color: '#64748b' }}
+          className="grid grid-cols-3 gap-2"
+        >
           <div>
-            <span className="font-semibold text-slate-700">Phone:</span> +91 (800) 555-GOMART
+            <strong style={{ color: '#334155' }}>Phone:</strong> +91 (800) 555-GOMART
           </div>
-          <div className="truncate">
-            <span className="font-semibold text-slate-700">Support:</span> support@gomart.digital
+          <div className="text-center truncate">
+            <strong style={{ color: '#334155' }}>Support:</strong> support@gomart.digital
           </div>
           <div className="text-right">
-            <span className="font-semibold text-slate-700">Platform:</span> She Software Solutions
+            <strong style={{ color: '#334155' }}>Platform:</strong> She Software Solutions
           </div>
         </div>
       </div>
