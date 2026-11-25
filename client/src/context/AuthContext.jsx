@@ -279,6 +279,13 @@ export const AuthProvider = ({ children }) => {
       console.error('Google Sign-In error:', error);
       if (error.code === 'auth/popup-closed-by-user') {
         toast.info('Google sign-in popup was closed.');
+      } else if (error.code === 'auth/unauthorized-domain') {
+        const currentDomain = window.location.hostname;
+        const msg = `Domain "${currentDomain}" is not authorized. Please add "${currentDomain}" to Firebase Console > Authentication > Settings > Authorized Domains.`;
+        toast.error(msg, { autoClose: 8000 });
+        const friendlyErr = new Error(msg);
+        friendlyErr.code = error.code;
+        throw friendlyErr;
       } else {
         toast.error(error.message || 'Google authentication was cancelled or failed.');
       }
