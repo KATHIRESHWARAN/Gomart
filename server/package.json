@@ -8,7 +8,8 @@
     "build": "npm install",
     "dev": "node --watch server.js",
     "seed": "node scripts/seed.js",
-    "test": "node scripts/test-api.js"
+    "test": "node scripts/test-api.js",
+    "test:search": "node scripts/test-search.js"
   },
   "keywords": [
     "digital-products",

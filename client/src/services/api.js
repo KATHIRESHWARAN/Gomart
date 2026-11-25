@@ -75,6 +75,95 @@ export const getFileUrl = (url) => {
   return url;
 };
 
+const normalizeSearchText = (str) => {
+  if (!str) return '';
+  return str
+    .toLowerCase()
+    .replace(/[-_.]+/g, ' ')
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+};
+
+const extractSearchTags = (tags) => {
+  if (!tags) return [];
+  if (Array.isArray(tags)) {
+    return tags.map((t) => String(t).toLowerCase().trim()).filter(Boolean);
+  }
+  if (typeof tags === 'string') {
+    return tags.split(/[,;\s]+/).map((t) => t.toLowerCase().trim()).filter(Boolean);
+  }
+  return [];
+};
+
+const matchAndScoreProduct = (product, query) => {
+  if (!query || !query.trim()) return { matches: true, score: 0 };
+
+  const rawQuery = query.toLowerCase().trim();
+  const normalizedQuery = normalizeSearchText(rawQuery);
+  const queryTokens = normalizedQuery.split(/\s+/).filter(Boolean);
+
+  if (queryTokens.length === 0) return { matches: true, score: 0 };
+
+  const name = (product.name || product.title || '').toLowerCase();
+  const normalizedName = normalizeSearchText(name);
+  const description = (product.description || '').toLowerCase();
+  const normalizedDesc = normalizeSearchText(description);
+  const category = (product.category || '').toLowerCase();
+  const normalizedCat = normalizeSearchText(category);
+  const brand = (product.brand || product.sellerName || '').toLowerCase();
+  const normalizedBrand = normalizeSearchText(brand);
+  const fileType = (product.fileType || product.format || '').toLowerCase();
+  const tags = extractSearchTags(product.tags);
+  const tagsString = tags.join(' ');
+  const normalizedTags = normalizeSearchText(tagsString);
+
+  const catAliases = [];
+  if (normalizedCat.includes('book') || normalizedCat.includes('ebook')) catAliases.push('ebook', 'ebooks', 'book', 'books');
+  if (normalizedCat.includes('tutorial')) catAliases.push('tutorial', 'tutorials', 'course', 'courses', 'video');
+  if (normalizedCat.includes('study') || normalizedCat.includes('material')) catAliases.push('study', 'material', 'materials', 'exam', 'prep');
+  if (normalizedCat.includes('template')) catAliases.push('template', 'templates', 'boilerplate', 'starter');
+  if (normalizedCat.includes('pdf')) catAliases.push('pdf', 'pdfs', 'document');
+  if (normalizedCat.includes('design') || normalizedCat.includes('resource')) catAliases.push('design', 'figma', 'ui', 'ux', 'icons', 'resources');
+  if (normalizedCat.includes('note') || normalizedCat.includes('guide')) catAliases.push('notes', 'note', 'guide', 'guides', 'handbook', 'cheatsheet');
+  const catAliasesString = catAliases.join(' ');
+
+  const fullSearchable = `${normalizedName} ${normalizedDesc} ${normalizedCat} ${catAliasesString} ${normalizedBrand} ${normalizedTags} ${fileType}`;
+
+  let tokenMatchCount = 0;
+  let score = 0;
+
+  for (const token of queryTokens) {
+    const singular = token.endsWith('s') && token.length > 3 ? token.slice(0, -1) : token;
+    const plural = `${token}s`;
+
+    const tokenMatches = fullSearchable.includes(token) || 
+                         fullSearchable.includes(singular) || 
+                         fullSearchable.includes(plural);
+
+    if (tokenMatches) {
+      tokenMatchCount++;
+
+      if (normalizedName === token || name === token) score += 100;
+      else if (normalizedName.includes(token)) score += 40;
+      else if (normalizedName.includes(singular)) score += 35;
+
+      if (normalizedCat.includes(token) || catAliases.includes(token)) score += 30;
+      if (tags.some((t) => t.includes(token) || t.includes(singular))) score += 25;
+      if (normalizedBrand.includes(token)) score += 15;
+      if (fileType.includes(token)) score += 15;
+      if (normalizedDesc.includes(token)) score += 5;
+    }
+  }
+
+  if (normalizedName.includes(normalizedQuery)) score += 60;
+  if (normalizedTags.includes(normalizedQuery)) score += 40;
+  if (normalizedCat.includes(normalizedQuery)) score += 35;
+
+  const matches = (tokenMatchCount === queryTokens.length) || (score >= 20);
+  return { matches, score };
+};
+
 // ==========================================
 // 1. PRODUCT SERVICE (Express REST + Firebase Resilient Fallback)
 // ==========================================
@@ -123,16 +212,14 @@ export const productService = {
       }
 
       if (search && search.trim() !== '') {
-        const q = search.toLowerCase().trim();
-        products = products.filter((p) =>
-          (p.name && p.name.toLowerCase().includes(q)) ||
-          (p.title && p.title.toLowerCase().includes(q)) ||
-          (p.description && p.description.toLowerCase().includes(q)) ||
-          (p.brand && p.brand.toLowerCase().includes(q)) ||
-          (p.sellerName && p.sellerName.toLowerCase().includes(q)) ||
-          (p.category && p.category.toLowerCase().includes(q)) ||
-          (Array.isArray(p.tags) && p.tags.some((t) => t.toLowerCase().includes(q)))
-        );
+        const scoredProducts = [];
+        for (const p of products) {
+          const { matches, score } = matchAndScoreProduct(p, search);
+          if (matches) {
+            scoredProducts.push({ ...p, _searchScore: score });
+          }
+        }
+        products = scoredProducts;
       }
 
       if (sort === 'price_asc' || sort === 'price_low') {
@@ -145,6 +232,8 @@ export const productService = {
         products.sort((a, b) => (b.viewCount || 0) - (a.viewCount || 0));
       } else if (sort === 'top_selling') {
         products.sort((a, b) => (b.salesCount || 0) - (a.salesCount || 0));
+      } else if (search && search.trim() !== '') {
+        products.sort((a, b) => (b._searchScore || 0) - (a._searchScore || 0) || new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
       } else {
         products.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
       }
