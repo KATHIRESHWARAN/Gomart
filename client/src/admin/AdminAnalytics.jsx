@@ -25,13 +25,14 @@ const COLORS = ['#6366f1', '#8b5cf6', '#10b981', '#f59e0b', '#ec4899', '#06b6d4'
 // Custom SVG Tick for YAxis to cleanly truncate long product titles and eliminate multi-line overlaps
 const TruncatedAxisTick = ({ x, y, payload }) => {
   const fullText = payload?.value || '';
-  const truncated = fullText.length > 18 ? `${fullText.substring(0, 16)}…` : fullText;
+  const truncated = fullText.length > 20 ? `${fullText.substring(0, 18)}…` : fullText;
   return (
     <g transform={`translate(${x},${y})`}>
       <title>{fullText}</title>
       <text
-        x={-8}
-        y={4}
+        x={-10}
+        y={0}
+        dy={4}
         textAnchor="end"
         fill="#94a3b8"
         fontSize={11}
@@ -222,21 +223,22 @@ const AdminAnalytics = () => {
             <span className="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">User Impressions</span>
           </div>
 
-          <div className="h-72 w-full">
+          <div className="h-80 w-full">
             {mostViewed.length === 0 ? (
               <div className="h-full flex items-center justify-center text-xs text-slate-500">
                 No view metrics recorded.
               </div>
             ) : (
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={mostViewed} layout="vertical" margin={{ top: 10, right: 25, left: 10, bottom: 5 }}>
+                <BarChart data={mostViewed} layout="vertical" margin={{ top: 10, right: 25, left: 15, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#334155" opacity={0.3} horizontal={false} />
                   <XAxis type="number" stroke="#94a3b8" fontSize={11} tickLine={false} />
                   <YAxis 
                     type="category" 
                     dataKey="name" 
                     stroke="#94a3b8" 
-                    width={130} 
+                    width={150} 
+                    interval={0}
                     tickLine={false}
                     axisLine={{ stroke: '#334155' }}
                     tick={<TruncatedAxisTick />}
@@ -270,21 +272,22 @@ const AdminAnalytics = () => {
             <span className="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">Gross Orders</span>
           </div>
 
-          <div className="h-72 w-full">
+          <div className="h-80 w-full">
             {topSelling.length === 0 ? (
               <div className="h-full flex items-center justify-center text-xs text-slate-500">
                 No purchase metrics recorded.
               </div>
             ) : (
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={topSelling} layout="vertical" margin={{ top: 10, right: 25, left: 10, bottom: 5 }}>
+                <BarChart data={topSelling} layout="vertical" margin={{ top: 10, right: 25, left: 15, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#334155" opacity={0.3} horizontal={false} />
                   <XAxis type="number" stroke="#94a3b8" fontSize={11} tickLine={false} />
                   <YAxis 
                     type="category" 
                     dataKey="name" 
                     stroke="#94a3b8" 
-                    width={130} 
+                    width={150} 
+                    interval={0}
                     tickLine={false}
                     axisLine={{ stroke: '#334155' }}
                     tick={<TruncatedAxisTick />}
